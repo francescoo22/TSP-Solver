@@ -1,3 +1,0 @@
-/home/francesco/Scrivania/Universita/MeMoCO/TSP-solver-cpp/cmake-build-debug/CMakeFiles/TSP_solver_cpp.dir
-/home/francesco/Scrivania/Universita/MeMoCO/TSP-solver-cpp/cmake-build-debug/CMakeFiles/edit_cache.dir
-/home/francesco/Scrivania/Universita/MeMoCO/TSP-solver-cpp/cmake-build-debug/CMakeFiles/rebuild_cache.dir
