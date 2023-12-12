@@ -1,7 +1,9 @@
 #include <iostream>
 #include <fstream>
 #include <vector>
+#include <string>
 #include <numeric>
+#include <map>
 #include "cpxmacro.h"
 
 using namespace std;
@@ -10,8 +12,45 @@ using namespace std;
 int status;
 char errmsg[BUF_SIZE];
 
+map<tuple<char, int, int>, int> var_index;
+
+char **from_string(const string &s) {
+    char **stringArray = new char *[1];
+    stringArray[0] = new char[s.length() + 1];
+    strcpy(stringArray[0], s.c_str());
+    return stringArray;
+}
+
+void setupLP(CEnv env, Prob lp, int size, const vector<vector<double>> &c) {
+    int cur_index = 0;
+
+    for (int i = 0; i < size; i++) {
+        for (int j = 0; j < size; j++) {
+            double *cost = new double(c[i][j]);
+            double *lb = new double(0);
+            double *ub = new double(1);
+            char *xtype = new char('B');
+            string var_name = "y_" + to_string(i) + "_" + to_string(j);
+            var_index[{'y', i, j}] = cur_index++;
+            CHECKED_CPX_CALL(CPXnewcols, env, lp, 1, cost, lb, ub, xtype, from_string(var_name));
+        }
+    }
+
+    for (int i = 0; i < size; i++) {
+        for (int j = 1; j < size; j++) {
+            double *cost = new double(0);
+            double *lb = new double(0);
+            double *ub = new double(CPX_INFBOUND);
+            char *xtype = new char('C');
+            string var_name = "x_" + to_string(i) + "_" + to_string(j);
+            var_index[{'x', i, j}] = cur_index++;
+            CHECKED_CPX_CALL(CPXnewcols, env, lp, 1, cost, lb, ub, xtype, from_string(var_name));
+        }
+    }
+}
+
 int main() {
-    ifstream in("../inputs/tsp60.dat");
+    ifstream in("../inputs/tsp6.dat");
     int size;
     in >> size;
     vector<vector<double>> c(size, vector<double>(size));
@@ -24,41 +63,11 @@ int main() {
         DECL_ENV(env)
         DECL_PROB(env, lp)
 
-        ///////////////////////// create variables with newcols
-        //
-        // status = CPXnewcols (env, lp, ccnt, obj, lb, ub, xctype, colname);
-        // ccnt -> numero di variabili,
-        // objCost -> costi nella funzione obiettivo
-        // lb, ub -> bound delle variabili
-        // xctype -> tipi delle variabli
+//        CPXsetintparam(env, CPXPARAM_WorkMem, 1024000000);
+//        CPXsetdblparam(env, CPX_PARAM_EPAGAP, 0.05);
+        cout<< "AAAAA" << endl;
 
-        // order: y_ij, x_ij
-
-        int ccnt = size * size * 2;
-        double objCost[ccnt];
-        double lb[ccnt];
-        double ub[ccnt];
-        char xtype[ccnt];
-        char **xname = NULL;
-
-        for (int i = 0, y_index = 0; i < size; i++) {
-            for (int j = 0; j < size; j++, y_index++) {
-                int x_index = y_index + size * size;
-                objCost[y_index] = c[i][j];
-                objCost[x_index] = 0;
-
-                lb[y_index] = 0;
-                lb[x_index] = 0;
-
-                ub[y_index] = 1;
-                ub[x_index] = CPX_INFBOUND;
-
-                xtype[y_index] = 'B';
-                xtype[x_index] = 'C';
-            }
-        }
-
-        CHECKED_CPX_CALL(CPXnewcols, env, lp, ccnt, &objCost[0], &lb[0], &ub[0], &xtype[0], xname);
+        setupLP(env, lp, size, c);
 
         ///////////////////////// create constraints
         //
@@ -82,11 +91,17 @@ int main() {
         int nzcnt = 0;
         for (int i = 0; i < 4; i++) nzcnt += constraint_rows[i] * constraint_non_zeros[i];
 
-        double rhs[rowcount];
-        char sense[rowcount];
-        int rmatbeg[rowcount];
-        int rmatind[nzcnt];
-        double rmatval[nzcnt];
+//        double rhs[rowcount];
+//        char sense[rowcount];
+//        int rmatbeg[rowcount];
+//        int rmatind[nzcnt];
+//        double rmatval[nzcnt];
+        auto rhs = new double[rowcount];
+        auto sense = new char[rowcount];
+        auto rmatbeg = new int[rowcount];
+        auto rmatind = new int[nzcnt];
+        auto rmatval = new double[nzcnt];
+
         char **newcolnames = NULL;
         char **rownames = NULL;
 
@@ -99,11 +114,11 @@ int main() {
             rmatbeg[cur_row] = cur_nz;
             for (int i = 0; i < size; i++, cur_nz++) {
                 rmatval[cur_nz] = 1;
-                rmatind[cur_nz] = (size * size) + (i * size) + k;
+                rmatind[cur_nz] = var_index[{'x', i, k}];
             }
             for (int j = 1; j < size; j++, cur_nz++) {
                 rmatval[cur_nz] = -1;
-                rmatind[cur_nz] = (size * size) + (k * size) + j;
+                rmatind[cur_nz] = var_index[{'x', k, j}];
             }
         }
 
@@ -114,7 +129,7 @@ int main() {
             rmatbeg[cur_row] = cur_nz;
             for (int j = 0; j < size; j++, cur_nz++) {
                 rmatval[cur_nz] = 1;
-                rmatind[cur_nz] = i * size + j;
+                rmatind[cur_nz] = var_index[{'y', i, j}];
             }
         }
 
@@ -125,7 +140,7 @@ int main() {
             rmatbeg[cur_row] = cur_nz;
             for (int i = 0; i < size; i++, cur_nz++) {
                 rmatval[cur_nz] = 1;
-                rmatind[cur_nz] = i * size + j;
+                rmatind[cur_nz] = var_index[{'y', i, j}];
             }
         }
 
@@ -138,11 +153,11 @@ int main() {
 
                 // -(size - 1) * y_ij
                 rmatval[cur_nz] = 1 - size;
-                rmatind[cur_nz] = i * size + j;
+                rmatind[cur_nz] = var_index[{'y', i, j}];
 
                 // x_ij
                 rmatval[cur_nz + 1] = 1;
-                rmatind[cur_nz + 1] = (size * size) + i * size + j;
+                rmatind[cur_nz + 1] = var_index[{'x', i, j}];
             }
         }
 
