@@ -7,21 +7,29 @@
 
 #include <vector>
 #include <string>
+#include "Path.h"
+
 using namespace std;
 
 class Graph {
 public:
-    explicit Graph(const string&);
+    int size{};
+
+    explicit Graph(const string &);
+
     void print();
-    double eval_path(const vector<int> &path);
-    [[nodiscard]] vector<int> get_starting_path() const;
-    pair<int, int> best_neighbour(const vector<int> &path);
-    void print_path_evaluation(const vector<int> &path);
-    static vector<int> reverse_path(int from, int to, const vector<int> &path);
-    vector<int> solve_TSP(vector<int> initial_path);
+
+    double eval_path(const Path &path);
+
+    [[nodiscard]] Path get_random_path() const;
+
+    pair<int, int> best_neighbour(const Path &path);
+
+    void print_path_evaluation(const Path &path);
+
+    Path solve_TSP(Path initial_path);
 
 private:
-    int size{};
     vector<vector<double>> adj;
 
 };
