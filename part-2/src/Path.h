@@ -12,7 +12,8 @@ using namespace std;
 
 class Path {
 public:
-    explicit Path (int size);
+    explicit Path(int size);
+
     explicit Path(const vector<int> &v);
 
     [[nodiscard]] unsigned long size() const;
