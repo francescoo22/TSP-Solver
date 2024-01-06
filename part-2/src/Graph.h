@@ -17,17 +17,13 @@ public:
 
     explicit Graph(const string &);
 
-    void print();
+    void print() const;
 
-    double eval_path(const Path &path);
+    [[nodiscard]] double eval_path(const Path &path) const;
 
     [[nodiscard]] Path get_random_path() const;
 
-    pair<int, int> best_neighbour(const Path &path);
-
-    void print_path_evaluation(const Path &path);
-
-    Path solve_TSP(Path initial_path);
+    [[nodiscard]] pair<int, int> best_neighbour(const Path &path) const;
 
 private:
     vector<vector<double>> adj;

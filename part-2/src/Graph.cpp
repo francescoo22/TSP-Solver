@@ -18,7 +18,7 @@ Graph::Graph(const string &file) {
     in.close();
 }
 
-void Graph::print() {
+void Graph::print() const {
     cout << size << endl;
     for (const auto &v: adj) {
         for (double x: v) cout << x << " ";
@@ -26,7 +26,7 @@ void Graph::print() {
     }
 }
 
-double Graph::eval_path(const Path &path) {
+double Graph::eval_path(const Path &path) const {
     double res = 0;
     for (int i = 0; i < size; i++) {
         res += adj[path[i]][path[i + 1]];
@@ -43,7 +43,7 @@ Path Graph::get_random_path() const {
     return Path(res);
 }
 
-pair<int, int> Graph::best_neighbour(const Path &path) {
+pair<int, int> Graph::best_neighbour(const Path &path) const {
     double initial_cost = eval_path(path);
     double cur_best = 1e20;
     pair<int, int> best_neighbour = {0, 0};
@@ -61,22 +61,4 @@ pair<int, int> Graph::best_neighbour(const Path &path) {
         }
     }
     return best_neighbour;
-}
-
-void Graph::print_path_evaluation(const Path &path) {
-    cout << "path: " + path.as_string();
-    cout << " --> " << eval_path(path) << endl;
-}
-
-Path Graph::solve_TSP(Path initial_path) {
-    auto [i, j] = best_neighbour(initial_path);
-    Path best_neighbour_path = initial_path.reverse_sub_path(i, j);
-    double initial_cost = eval_path(initial_path);
-    double best_neighbour_cost = eval_path(best_neighbour_path);
-    if (best_neighbour_cost >= initial_cost) {
-        return initial_path;
-    } else {
-        print_path_evaluation(best_neighbour_path);
-        return solve_TSP(best_neighbour_path);
-    }
 }
