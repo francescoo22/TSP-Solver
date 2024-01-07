@@ -9,13 +9,11 @@
 #include <string>
 #include "Path.h"
 
-using namespace std;
-
 class Graph {
 public:
-    explicit Graph(const string &file);
+    explicit Graph(const std::string &file);
 
-    explicit Graph(const vector<vector<double>> &adj);
+    explicit Graph(const std::vector<std::vector<double>> &adj);
 
     explicit operator std::string() const;
 
@@ -31,7 +29,7 @@ public:
 
 private:
     int _size{};
-    vector<vector<double>> adj;
+    std::vector<std::vector<double>> adj;
 
 };
 

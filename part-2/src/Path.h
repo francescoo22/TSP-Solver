@@ -8,15 +8,13 @@
 #include <vector>
 #include <string>
 
-using namespace std;
-
 class Path {
 public:
     Path() = default;
 
     explicit Path(int size);
 
-    explicit Path(const vector<int> &v);
+    explicit Path(const std::vector<int> &v);
 
     [[nodiscard]] unsigned long size() const;
 
@@ -24,14 +22,14 @@ public:
 
     bool operator<(const Path &p) const;
 
-    [[nodiscard]] const vector<int> &as_vector() const;
+    [[nodiscard]] const std::vector<int> &as_vector() const;
 
     [[nodiscard]] Path reverse_sub_path(int from, int to) const;
 
-    [[nodiscard]] string as_string() const;
+    [[nodiscard]] std::string as_string() const;
 
 private:
-    vector<int> nodes;
+    std::vector<int> nodes;
 };
 
 

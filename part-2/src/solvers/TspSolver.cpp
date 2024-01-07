@@ -4,8 +4,8 @@
 #include "TspSolver.h"
 #include <sstream>
 
-string TspSolver::evaluated_trace_as_string(const Graph &graph) const {
-    stringstream ss;
+std::string TspSolver::evaluated_trace_as_string(const Graph &graph) const {
+    std::stringstream ss;
 
     for (const Path &path: trace) {
         ss << graph.eval_path(path) << " --> " << path.as_string() << "\n";

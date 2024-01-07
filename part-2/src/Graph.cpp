@@ -9,32 +9,32 @@
 #include "Graph.h"
 #include "Path.h"
 
-Graph::Graph(const string &file) {
-    ifstream in(file);
+Graph::Graph(const std::string &file) {
+    std::ifstream in(file);
     in >> _size;
-    adj = vector<vector<double>>(_size, vector<double>(_size));
+    adj = std::vector<std::vector<double >>(_size, std::vector<double>(_size));
     for (auto &v: adj)
         for (double &x: v) in >> x;
     in.close();
 }
 
-Graph::Graph(const vector<vector<double>> &adj) {
+Graph::Graph(const std::vector<std::vector<double>> &adj) {
     _size = adj.size();
     for (const auto &v: adj)
-        if (v.size() != _size) throw invalid_argument("Graph can only be initialized with a square matrix");
+        if (v.size() != _size) throw std::invalid_argument("Graph can only be initialized with a square matrix");
 
     for (int i = 0; i < _size; i++)
         for (int j = i + 1; j < _size; j++)
-            if (adj[i][j] != adj[j][i]) throw invalid_argument("Graph should be non-directed");
+            if (adj[i][j] != adj[j][i]) throw std::invalid_argument("Graph should be non-directed");
 
     this->adj = adj;
 }
 
 Graph::operator std::string() const {
-    string res;
-    res += to_string(_size) + "\n";
+    std::string res;
+    res += std::to_string(_size) + "\n";
     for (const auto &v: adj) {
-        for (double x: v) res += to_string(x) + " ";
+        for (double x: v) res += std::to_string(x) + " ";
         res += "\n";
     }
     return res;
@@ -51,7 +51,7 @@ double Graph::eval_path(const Path &path) const {
 Path Graph::get_random_path() const {
     auto rd = std::random_device{};
     auto rng = std::default_random_engine{rd()};
-    auto res = vector<int>(_size);
+    auto res = std::vector<int>(_size);
     for (int i = 0; i < _size; i++) res[i] = i;
     std::shuffle(std::begin(res), std::end(res), rng);
     return Path(res);
@@ -67,10 +67,10 @@ int Graph::size() const {
 }
 
 void Graph::generate_input(int size) {
-    ofstream out("../inputs/tsp" + to_string(size) + ".dat");
-    vector<vector<double>> adj(size, vector<double>(size, 0));
+    std::ofstream out("../inputs/tsp" + std::to_string(size) + ".dat");
+    std::vector<std::vector<double>> adj(size, std::vector<double>(size, 0));
 
-    uniform_real_distribution<double> distribution(0, 50);
+    std::uniform_real_distribution<double> distribution(0, 50);
     auto rd = std::random_device{};
     auto rng = std::default_random_engine{rd()};
 
@@ -79,5 +79,5 @@ void Graph::generate_input(int size) {
             adj[i][j] = adj[j][i] = distribution(rng);
 
     Graph res(adj);
-    out << string(res);
+    out << std::string(res);
 }

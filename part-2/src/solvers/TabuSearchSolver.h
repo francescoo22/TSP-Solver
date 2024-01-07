@@ -16,13 +16,13 @@ public:
 
     [[nodiscard]] Path solve(const Graph &graph, const Path &initial_path) override;
 
-    [[nodiscard]] string evaluated_trace_as_string(const Graph &graph) const override;
+    [[nodiscard]] std::string evaluated_trace_as_string(const Graph &graph) const override;
 
     [[nodiscard]] Path best_neighbour(const Graph &graph, const Path &path);
 
 private:
-    deque<Path> tabu_list;
-    map<Path, bool> tabu_map;
+    std::deque<Path> tabu_list;
+    std::map<Path, bool> tabu_map;
     int tabu_list_length;
     int max_iterations;
     Path solution;

@@ -20,8 +20,8 @@ Path TwoOptSolver::solve(const Graph &graph, const Path &initial_path) {
     }
 }
 
-string TwoOptSolver::evaluated_trace_as_string(const Graph &graph) const {
-    stringstream ss;
+std::string TwoOptSolver::evaluated_trace_as_string(const Graph &graph) const {
+    std::stringstream ss;
     ss << "******************* 2-OPT SOLUTION = "
        << graph.eval_path(solution)
        << " *******************\n"
@@ -29,11 +29,11 @@ string TwoOptSolver::evaluated_trace_as_string(const Graph &graph) const {
     return ss.str();
 }
 
-pair<int, int> TwoOptSolver::best_neighbour(const Graph &graph, const Path &path) {
+std::pair<int, int> TwoOptSolver::best_neighbour(const Graph &graph, const Path &path) {
     double initial_cost = graph.eval_path(path);
     double cur_best = 1e20;
     int size = graph.size();
-    pair<int, int> best_neighbour = {0, 0};
+    std::pair<int, int> best_neighbour = {0, 0};
     for (int i = 0; i < size; i++) {
         for (int j = i + 1; j < size; j++) {
             if (i == 0 && j == size - 1) continue;

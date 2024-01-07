@@ -5,12 +5,10 @@
 #include "solvers/TwoOptSolver.h"
 #include "solvers/TabuSearchSolver.h"
 
-using namespace std;
-
 int main() {
-    string file = "../inputs/tsp60.dat";
-    ofstream opt_out("../outputs/2-opt_trace.txt");
-    ofstream ts_out("../outputs/ts_trace.txt");
+    std::string file = "../inputs/tsp60.dat";
+    std::ofstream opt_out("../outputs/2-opt_trace.txt");
+    std::ofstream ts_out("../outputs/ts_trace.txt");
 
     Graph graph(file);
     Path path(graph.size());
@@ -19,7 +17,7 @@ int main() {
     TwoOptSolver two_opt_solver;
     Path two_opt_sol = two_opt_solver.solve(graph, path);
     opt_out << two_opt_solver.evaluated_trace_as_string(graph);
-    if (file == "../inputs/tsp60.dat") assert(abs(graph.eval_path(two_opt_sol) - 669.3) < 0.1);
+    if (file == "../inputs/tsp60.dat") assert(std::abs(graph.eval_path(two_opt_sol) - 669.3) < 0.1);
 
     // ************ TABU-SEARCH SOLUTION ************
     TabuSearchSolver tabu_search_solver(3, 1000);
