@@ -3,6 +3,7 @@
 //
 
 #include "TwoOptSolver.h"
+#include <sstream>
 
 Path TwoOptSolver::solve(const Graph &graph, const Path &initial_path) {
 //    TODO: make non-recursive and clear trace at the beginning
@@ -15,13 +16,17 @@ Path TwoOptSolver::solve(const Graph &graph, const Path &initial_path) {
     if (best_neighbour_cost >= initial_cost) {
         return initial_path;
     } else {
-        return solve(graph, best_neighbour_path);
+        return solution = solve(graph, best_neighbour_path);
     }
 }
 
 string TwoOptSolver::evaluated_trace_as_string(const Graph &graph) const {
-    return "******************* 2-OPT SOLUTION *******************\n" + TspSolver::evaluated_trace_as_string(graph) +
-           "\n";
+    stringstream ss;
+    ss << "******************* 2-OPT SOLUTION = "
+       << graph.eval_path(solution)
+       << " *******************\n"
+       << TspSolver::evaluated_trace_as_string(graph);
+    return ss.str();
 }
 
 pair<int, int> TwoOptSolver::best_neighbour(const Graph &graph, const Path &path) {

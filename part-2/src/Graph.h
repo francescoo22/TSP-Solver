@@ -13,9 +13,11 @@ using namespace std;
 
 class Graph {
 public:
-    explicit Graph(const string &);
+    explicit Graph(const string &file);
 
-    void print() const;
+    explicit Graph(const vector<vector<double>> &adj);
+
+    explicit operator std::string() const;
 
     [[nodiscard]] int size() const;
 
@@ -24,6 +26,8 @@ public:
     [[nodiscard]] double neighbour_delta(const Path &path, int i, int j) const;
 
     [[nodiscard]] Path get_random_path() const;
+
+    static void generate_input(int size);
 
 private:
     int _size{};

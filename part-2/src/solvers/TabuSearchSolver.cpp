@@ -2,6 +2,8 @@
 // Created by francesco on 06/01/24.
 //
 
+#include <iostream>
+#include <sstream>
 #include "TabuSearchSolver.h"
 
 TabuSearchSolver::TabuSearchSolver(int tabu_list_length, int max_iterations) : tabu_list_length(tabu_list_length),
@@ -17,6 +19,7 @@ Path TabuSearchSolver::solve(const Graph &graph, const Path &initial_path) {
     Path best_path = initial_path;
     Path cur_path = initial_path;
     for (int i = 0; i < max_iterations; i++) {
+        cout << "iteration " << i << ":\n";
         cur_path = best_neighbour(graph, cur_path);
         trace.push_back(cur_path);
         // TODO: try to avoid evaluation
@@ -28,9 +31,12 @@ Path TabuSearchSolver::solve(const Graph &graph, const Path &initial_path) {
 }
 
 string TabuSearchSolver::evaluated_trace_as_string(const Graph &graph) const {
-    return "**************** TABU SEARCH SOLUTION ****************\n"
-           "Solution: " + to_string(graph.eval_path(solution)) + "\n"
-           + TspSolver::evaluated_trace_as_string(graph) + "\n";
+    stringstream ss;
+    ss << "******************* TABU SEARCH SOLUTION = "
+       << graph.eval_path(solution)
+       << " *******************\n"
+       << TspSolver::evaluated_trace_as_string(graph);
+    return ss.str();
 }
 
 Path TabuSearchSolver::best_neighbour(const Graph &graph, const Path &path) {
@@ -48,16 +54,19 @@ Path TabuSearchSolver::best_neighbour(const Graph &graph, const Path &path) {
                 if (!tabu_map[new_path]) {
                     cur_best = cost;
                     best_neighbour = new_path;
+                } else {
+                    cout << "- " << new_path.as_string() << endl;
                 }
             }
         }
     }
 
-    tabu_map[best_neighbour] = true;
     if (tabu_list.size() == tabu_list_length) {
         tabu_map[tabu_list.back()] = false;
         tabu_list.pop_back();
-        tabu_list.push_front(best_neighbour);
     }
+    tabu_map[best_neighbour] = true;
+    tabu_list.push_front(best_neighbour);
+
     return best_neighbour;
 }

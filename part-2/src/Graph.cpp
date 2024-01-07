@@ -18,12 +18,26 @@ Graph::Graph(const string &file) {
     in.close();
 }
 
-void Graph::print() const {
-    cout << _size << endl;
+Graph::Graph(const vector<vector<double>> &adj) {
+    _size = adj.size();
+    for (const auto &v: adj)
+        if (v.size() != _size) throw invalid_argument("Graph can only be initialized with a square matrix");
+
+    for (int i = 0; i < _size; i++)
+        for (int j = i + 1; j < _size; j++)
+            if (adj[i][j] != adj[j][i]) throw invalid_argument("Graph should be non-directed");
+
+    this->adj = adj;
+}
+
+Graph::operator std::string() const {
+    string res;
+    res += to_string(_size) + "\n";
     for (const auto &v: adj) {
-        for (double x: v) cout << x << " ";
-        cout << endl;
+        for (double x: v) res += to_string(x) + " ";
+        res += "\n";
     }
+    return res;
 }
 
 double Graph::eval_path(const Path &path) const {
@@ -50,4 +64,20 @@ double Graph::neighbour_delta(const Path &path, int i, int j) const {
 
 int Graph::size() const {
     return _size;
+}
+
+void Graph::generate_input(int size) {
+    ofstream out("../inputs/tsp" + to_string(size) + ".dat");
+    vector<vector<double>> adj(size, vector<double>(size, 0));
+
+    uniform_real_distribution<double> distribution(0, 50);
+    auto rd = std::random_device{};
+    auto rng = std::default_random_engine{rd()};
+
+    for (int i = 0; i < size; i++)
+        for (int j = i + 1; j < size; j++)
+            adj[i][j] = adj[j][i] = distribution(rng);
+
+    Graph res(adj);
+    out << string(res);
 }

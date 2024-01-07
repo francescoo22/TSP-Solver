@@ -15,6 +15,9 @@ public:
     [[nodiscard]] string evaluated_trace_as_string(const Graph &graph) const override;
 
     [[nodiscard]] static pair<int, int> best_neighbour(const Graph &graph, const Path &path);
+
+private:
+    Path solution;
 };
 
 

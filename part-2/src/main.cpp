@@ -9,7 +9,8 @@ using namespace std;
 
 int main() {
     string file = "../inputs/tsp60.dat";
-    ofstream out("../outputs/trace.txt");
+    ofstream opt_out("../outputs/2-opt_trace.txt");
+    ofstream ts_out("../outputs/ts_trace.txt");
 
     Graph graph(file);
     Path path(graph.size());
@@ -17,11 +18,13 @@ int main() {
     // ************ 2-OPT SOLUTION ************
     TwoOptSolver two_opt_solver;
     Path two_opt_sol = two_opt_solver.solve(graph, path);
-    out << two_opt_solver.evaluated_trace_as_string(graph) << endl;
+    opt_out << two_opt_solver.evaluated_trace_as_string(graph);
     if (file == "../inputs/tsp60.dat") assert(abs(graph.eval_path(two_opt_sol) - 669.3) < 0.1);
 
     // ************ TABU-SEARCH SOLUTION ************
-    TabuSearchSolver tabu_search_solver(50, 2000);
+    TabuSearchSolver tabu_search_solver(3, 1000);
     Path tabu_sol = tabu_search_solver.solve(graph, path);
-    out << tabu_search_solver.evaluated_trace_as_string(graph);
+    ts_out << tabu_search_solver.evaluated_trace_as_string(graph);
+
+    //    Graph::generate_input(200);
 }
