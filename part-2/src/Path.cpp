@@ -41,3 +41,7 @@ string Path::as_string() const {
     res += "]";
     return res;
 }
+
+bool Path::operator<(const Path &p) const {
+    return nodes < p.nodes;
+}

@@ -13,19 +13,20 @@ using namespace std;
 
 class Graph {
 public:
-    int size{};
-
     explicit Graph(const string &);
 
     void print() const;
 
+    [[nodiscard]] int size() const;
+
     [[nodiscard]] double eval_path(const Path &path) const;
+
+    [[nodiscard]] double neighbour_delta(const Path &path, int i, int j) const;
 
     [[nodiscard]] Path get_random_path() const;
 
-    [[nodiscard]] pair<int, int> best_neighbour(const Path &path) const;
-
 private:
+    int _size{};
     vector<vector<double>> adj;
 
 };

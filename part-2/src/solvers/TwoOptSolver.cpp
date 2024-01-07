@@ -5,7 +5,9 @@
 #include "TwoOptSolver.h"
 
 Path TwoOptSolver::solve(const Graph &graph, const Path &initial_path) {
-    auto [i, j] = graph.best_neighbour(initial_path);
+//    TODO: make non-recursive and clear trace at the beginning
+
+    auto [i, j] = best_neighbour(graph, initial_path);
     Path best_neighbour_path = initial_path.reverse_sub_path(i, j);
     double initial_cost = graph.eval_path(initial_path);
     double best_neighbour_cost = graph.eval_path(best_neighbour_path);
@@ -17,15 +19,26 @@ Path TwoOptSolver::solve(const Graph &graph, const Path &initial_path) {
     }
 }
 
-const vector<Path> &TwoOptSolver::get_trace() const {
-    return trace;
+string TwoOptSolver::evaluated_trace_as_string(const Graph &graph) const {
+    return "******************* 2-OPT SOLUTION *******************\n" + TspSolver::evaluated_trace_as_string(graph) +
+           "\n";
 }
 
-string TwoOptSolver::evaluated_trace_as_string(const Graph &graph) const {
-    string res;
-    for (const Path &path: trace) {
-        res += path.as_string() + " --> " + to_string(graph.eval_path(path)) + "\n";
+pair<int, int> TwoOptSolver::best_neighbour(const Graph &graph, const Path &path) {
+    double initial_cost = graph.eval_path(path);
+    double cur_best = 1e20;
+    int size = graph.size();
+    pair<int, int> best_neighbour = {0, 0};
+    for (int i = 0; i < size; i++) {
+        for (int j = i + 1; j < size; j++) {
+            if (i == 0 && j == size - 1) continue;
+
+            double cost = initial_cost + graph.neighbour_delta(path, i, j);
+            if (cost < cur_best) {
+                cur_best = cost;
+                best_neighbour = {i, j};
+            }
+        }
     }
-    res.pop_back();
-    return res;
+    return best_neighbour;
 }

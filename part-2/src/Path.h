@@ -12,6 +12,8 @@ using namespace std;
 
 class Path {
 public:
+    Path() = default;
+
     explicit Path(int size);
 
     explicit Path(const vector<int> &v);
@@ -19,6 +21,8 @@ public:
     [[nodiscard]] unsigned long size() const;
 
     int operator[](int index) const;
+
+    bool operator<(const Path &p) const;
 
     [[nodiscard]] const vector<int> &as_vector() const;
 

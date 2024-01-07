@@ -10,4 +10,7 @@ add_executable(TSP_solver_cpp src/main.cpp
         src/Path.h
         src/solvers/TspSolver.h
         src/solvers/TwoOptSolver.cpp
-        src/solvers/TwoOptSolver.h)
+        src/solvers/TwoOptSolver.h
+        src/solvers/TabuSearchSolver.cpp
+        src/solvers/TabuSearchSolver.h
+        src/solvers/TspSolver.cpp)
