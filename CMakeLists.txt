@@ -19,7 +19,6 @@ add_executable(TSP_solver_cpp src/main.cpp
         src/solvers/TwoOptSolver.h
         src/solvers/TabuSearchSolver.cpp
         src/solvers/TabuSearchSolver.h
-        src/solvers/TspSolver.cpp
         src/solvers/SimplexSolver.cpp
         src/solvers/SimplexSolver.h
         src/solvers/NeighbourhoodSolver.cpp
