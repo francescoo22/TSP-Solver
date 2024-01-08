@@ -8,9 +8,9 @@
 
 #include <deque>
 #include <map>
-#include "TspSolver.h"
+#include "NeighbourhoodSolver.h"
 
-class TabuSearchSolver : public TspSolver {
+class TabuSearchSolver : public NeighbourhoodSolver {
 public:
     explicit TabuSearchSolver(int tabu_list_length, int max_iterations);
 

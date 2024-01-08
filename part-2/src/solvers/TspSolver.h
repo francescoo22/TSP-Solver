@@ -13,7 +13,7 @@ class TspSolver {
 public:
     [[nodiscard]] virtual Path solve(const Graph &graph, const Path &initial_path) = 0;
 
-    [[nodiscard]] virtual std::string evaluated_trace_as_string(const Graph &graph) const;
+    [[nodiscard]] virtual std::string evaluated_trace_as_string(const Graph &graph) const = 0;
 
 protected:
     std::vector<Path> trace;

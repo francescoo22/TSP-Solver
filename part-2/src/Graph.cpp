@@ -81,3 +81,8 @@ void Graph::generate_input(int size) {
     Graph res(adj);
     out << std::string(res);
 }
+
+double Graph::get_edge(int i, int j) const {
+    if (i >= _size || j >= _size) throw std::invalid_argument("Edge out of bounds");
+    return adj[i][j];
+}

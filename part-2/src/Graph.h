@@ -19,6 +19,8 @@ public:
 
     [[nodiscard]] int size() const;
 
+    double get_edge(int i, int j) const;
+
     [[nodiscard]] double eval_path(const Path &path) const;
 
     [[nodiscard]] double neighbour_delta(const Path &path, int i, int j) const;

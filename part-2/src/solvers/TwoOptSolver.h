@@ -6,9 +6,9 @@
 #define TSP_SOLVER_CPP_TWOOPTSOLVER_H
 
 
-#include "TspSolver.h"
+#include "NeighbourhoodSolver.h"
 
-class TwoOptSolver : public TspSolver {
+class TwoOptSolver : public NeighbourhoodSolver {
 public:
     [[nodiscard]] Path solve(const Graph &graph, const Path &initial_path) override;
 

@@ -25,7 +25,7 @@ std::string TwoOptSolver::evaluated_trace_as_string(const Graph &graph) const {
     ss << "******************* 2-OPT SOLUTION = "
        << graph.eval_path(solution)
        << " *******************\n"
-       << TspSolver::evaluated_trace_as_string(graph);
+       << NeighbourhoodSolver::evaluated_trace_as_string(graph);
     return ss.str();
 }
 

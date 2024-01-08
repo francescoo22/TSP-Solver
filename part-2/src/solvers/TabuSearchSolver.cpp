@@ -19,7 +19,6 @@ Path TabuSearchSolver::solve(const Graph &graph, const Path &initial_path) {
     Path best_path = initial_path;
     Path cur_path = initial_path;
     for (int i = 0; i < max_iterations; i++) {
-        std::cout << "iteration " << i << ":\n";
         cur_path = best_neighbour(graph, cur_path);
         trace.push_back(cur_path);
         // TODO: try to avoid evaluation
@@ -35,7 +34,7 @@ std::string TabuSearchSolver::evaluated_trace_as_string(const Graph &graph) cons
     ss << "******************* TABU SEARCH SOLUTION = "
        << graph.eval_path(solution)
        << " *******************\n"
-       << TspSolver::evaluated_trace_as_string(graph);
+       << NeighbourhoodSolver::evaluated_trace_as_string(graph);
     return ss.str();
 }
 
@@ -54,8 +53,6 @@ Path TabuSearchSolver::best_neighbour(const Graph &graph, const Path &path) {
                 if (!tabu_map[new_path]) {
                     cur_best = cost;
                     best_neighbour = new_path;
-                } else {
-                    std::cout << "- " << new_path.as_string() << std::endl;
                 }
             }
         }
