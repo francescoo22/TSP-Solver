@@ -17,9 +17,13 @@ public:
     [[nodiscard]] std::string evaluated_trace_as_string(const Graph &graph) const override;
 
 private:
-    std::map<std::tuple<char, int, int>, int> var_index;
+    std::map<std::tuple<char, int, int>, int> tuple_to_index;
+    std::map<int, std::tuple<char, int, int>> index_to_tuple;
+    Path solution;
 
     static char **from_string(const std::string &s);
+
+    Path solution_path(CPXENVptr env, CPXLPptr lp);
 
     void setupLP(CPXENVptr env, CPXLPptr lp, int size, const Graph &graph);
 };

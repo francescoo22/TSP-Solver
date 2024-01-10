@@ -7,6 +7,7 @@
 
 int main() {
     std::string file = "../inputs/tsp12.dat";
+    std::ofstream simplex_out("../outputs/simplex.txt");
     std::ofstream opt_out("../outputs/2-opt_trace.txt");
     std::ofstream ts_out("../outputs/ts_trace.txt");
 
@@ -16,6 +17,7 @@ int main() {
     // ************ SIMPLEX SOLUTION ************
     SimplexSolver simplex_solver;
     simplex_solver.solve(graph, path);
+    simplex_out << simplex_solver.evaluated_trace_as_string(graph);
 
     // ************ 2-OPT SOLUTION ************
     TwoOptSolver two_opt_solver;

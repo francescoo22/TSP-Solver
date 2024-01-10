@@ -24,6 +24,7 @@ const std::vector<int> &Path::as_vector() const {
 }
 
 Path Path::reverse_sub_path(int from, int to) const {
+    // TODO: put always node 0 at position 0
     std::vector<int> res(as_vector());
     for (int i = from; i <= (from + to) / 2; i++) {
         std::swap(res[i], res[to - (i - from)]);

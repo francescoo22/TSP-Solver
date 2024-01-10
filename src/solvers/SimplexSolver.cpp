@@ -6,15 +6,24 @@
 #include <cstring>
 #include <iostream>
 #include <cassert>
+#include <sstream>
+#include <algorithm>
 
 std::string SimplexSolver::evaluated_trace_as_string(const Graph &graph) const {
-    return {};
+    std::stringstream ss;
+    ss << "******************* SIMPLEX SOLUTION = "
+       << graph.eval_path(solution)
+       << " *******************\n"
+       << solution.as_string();
+    return ss.str();
 }
 
 Path SimplexSolver::solve(const Graph &graph, const Path &initial_path) {
     int status;
     auto env = CPXopenCPLEX(&status);
     auto lp = CPXcreateprob(env, &status, "");
+    tuple_to_index.clear();
+    index_to_tuple.clear();
 
     setupLP(env, lp, graph.size(), graph);
 
@@ -30,9 +39,14 @@ Path SimplexSolver::solve(const Graph &graph, const Path &initial_path) {
     std::cout << "Objval: " << obj_val << std::endl;
     if (graph.size() == 12) assert(std::abs(obj_val - 66.4) < 0.1);
 
+    CPXsolwrite(env, lp, "../outputs/simplex_sol.sol");
+
+    Path res = solution_path(env, lp);
+    solution = res;
+
     CPXfreeprob(env, &lp);
     CPXcloseCPLEX(&env);
-    return {};
+    return res;
 }
 
 char **SimplexSolver::from_string(const std::string &s) {
@@ -52,7 +66,8 @@ void SimplexSolver::setupLP(CPXENVptr env, CPXLPptr lp, int size, const Graph &g
             double ub = 1;
             double cost = graph.get_edge(i, j);
             std::string var_name = "y_" + std::to_string(i) + "_" + std::to_string(j);
-            var_index[{'y', i, j}] = cur_index++;
+            index_to_tuple[cur_index] = {'y', i, j};
+            tuple_to_index[{'y', i, j}] = cur_index++;
             CPXnewcols(env, lp, 1, &cost, &lb, &ub, &xtype, from_string(var_name));
         }
     }
@@ -64,7 +79,8 @@ void SimplexSolver::setupLP(CPXENVptr env, CPXLPptr lp, int size, const Graph &g
             double ub = CPX_INFBOUND;
             double cost = 0;
             std::string var_name = "x_" + std::to_string(i) + "_" + std::to_string(j);
-            var_index[{'x', i, j}] = cur_index++;
+            index_to_tuple[cur_index] = {'x', i, j};
+            tuple_to_index[{'x', i, j}] = cur_index++;
             CPXnewcols(env, lp, 1, &cost, &lb, &ub, &xtype, from_string(var_name));
         }
     }
@@ -82,12 +98,12 @@ void SimplexSolver::setupLP(CPXENVptr env, CPXLPptr lp, int size, const Graph &g
         for (int i = 0; i < size; i++) {
             if (i == k) continue;
             coef.push_back(1);
-            idx.push_back(var_index[{'x', i, k}]);
+            idx.push_back(tuple_to_index[{'x', i, k}]);
         }
         for (int j = 1; j < size; j++) {
             if (j == k) continue;
             coef.push_back(-1);
-            idx.push_back(var_index[{'x', k, j}]);
+            idx.push_back(tuple_to_index[{'x', k, j}]);
         }
         CPXaddrows(env, lp, 0, 1, idx.size(), &rhs, &sense, &matbeg, &idx[0], &coef[0], nullptr,
                    nullptr);
@@ -104,7 +120,7 @@ void SimplexSolver::setupLP(CPXENVptr env, CPXLPptr lp, int size, const Graph &g
         int matbeg = 0;
         for (int j = 0; j < size; j++) {
             coef.push_back(1);
-            idx.push_back(var_index[{'y', i, j}]);
+            idx.push_back(tuple_to_index[{'y', i, j}]);
         }
         CPXaddrows(env, lp, 0, 1, idx.size(), &rhs, &sense, &matbeg, &idx[0], &coef[0], nullptr,
                    nullptr);
@@ -119,7 +135,7 @@ void SimplexSolver::setupLP(CPXENVptr env, CPXLPptr lp, int size, const Graph &g
         int matbeg = 0;
         for (int i = 0; i < size; i++) {
             coef.push_back(1);
-            idx.push_back(var_index[{'y', i, j}]);
+            idx.push_back(tuple_to_index[{'y', i, j}]);
         }
         CPXaddrows(env, lp, 0, 1, idx.size(), &rhs, &sense, &matbeg, &idx[0], &coef[0], nullptr,
                    nullptr);
@@ -136,13 +152,32 @@ void SimplexSolver::setupLP(CPXENVptr env, CPXLPptr lp, int size, const Graph &g
 
             // -(size - 1) * y_ij
             coef.push_back(1 - size);
-            idx.push_back(var_index[{'y', i, j}]);
+            idx.push_back(tuple_to_index[{'y', i, j}]);
 
             // x_ij
             coef.push_back(1);
-            idx.push_back(var_index[{'x', i, j}]);
+            idx.push_back(tuple_to_index[{'x', i, j}]);
             CPXaddrows(env, lp, 0, 1, idx.size(), &rhs, &sense, &matbeg, &idx[0], &coef[0], nullptr,
                        nullptr);
         }
     }
+}
+
+Path SimplexSolver::solution_path(CPXENVptr env, CPXLPptr lp) {
+    std::vector<double> var_values(index_to_tuple.size());
+    std::vector<std::pair<int, int>> arcs;
+    CPXgetx(env, lp, &var_values[0], 0, var_values.size() - 1);
+    for (int i = 0; i < var_values.size(); i++) {
+        auto [c, a, b] = index_to_tuple[i];
+        if (c == 'y' && var_values[i] == 1) arcs.emplace_back(a, b);
+    }
+    std::sort(arcs.begin(), arcs.end());
+    std::vector<int> ans;
+    auto [cur, next] = arcs[0];
+    do {
+        ans.push_back(cur);
+        cur = next;
+        next = arcs[cur].second;
+    } while (cur != 0);
+    return Path(ans);
 }
