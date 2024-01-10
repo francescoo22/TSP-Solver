@@ -28,7 +28,7 @@ Path SimplexSolver::solve(const Graph &graph, const Path &initial_path) {
     double obj_val;
     CPXgetobjval(env, lp, &obj_val);
     std::cout << "Objval: " << obj_val << std::endl;
-    assert(std::abs(obj_val - 66.4) < 0.1);
+    if (graph.size() == 12) assert(std::abs(obj_val - 66.4) < 0.1);
 
     CPXfreeprob(env, &lp);
     CPXcloseCPLEX(&env);
@@ -80,10 +80,12 @@ void SimplexSolver::setupLP(CPXENVptr env, CPXLPptr lp, int size, const Graph &g
         int matbeg = 0;
 
         for (int i = 0; i < size; i++) {
+            if (i == k) continue;
             coef.push_back(1);
             idx.push_back(var_index[{'x', i, k}]);
         }
         for (int j = 1; j < size; j++) {
+            if (j == k) continue;
             coef.push_back(-1);
             idx.push_back(var_index[{'x', k, j}]);
         }
