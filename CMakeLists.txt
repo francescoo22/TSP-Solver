@@ -22,6 +22,8 @@ add_executable(TSP_solver_cpp src/main.cpp
         src/solvers/SimplexSolver.cpp
         src/solvers/SimplexSolver.h
         src/solvers/NeighbourhoodSolver.cpp
-        src/solvers/NeighbourhoodSolver.h)
+        src/solvers/NeighbourhoodSolver.h
+        src/Point.cpp
+        src/Point.h)
 
 target_link_libraries(TSP_solver_cpp ${CPX_LIBDIR})

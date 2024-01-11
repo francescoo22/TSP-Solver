@@ -8,18 +8,17 @@
 #include <vector>
 #include <string>
 #include "Path.h"
+#include "Point.h"
 
 class Graph {
 public:
-    explicit Graph(const std::string &file);
-
-    explicit Graph(const std::vector<std::vector<double>> &adj);
+    explicit Graph(const std::vector<Point> &points);
 
     explicit operator std::string() const;
 
-    [[nodiscard]] int size() const;
+    [[nodiscard]] unsigned long size() const;
 
-    double get_edge(int i, int j) const;
+    [[nodiscard]] double get_edge(int i, int j) const;
 
     [[nodiscard]] double eval_path(const Path &path) const;
 
@@ -29,9 +28,12 @@ public:
 
     static void generate_input(int size);
 
+    static Graph from_file(const std::string &file);
+
 private:
-    int _size{};
-    std::vector<std::vector<double>> adj;
+    unsigned long _size;
+    std::vector<Point> _points;
+    std::vector<std::vector<double>> _adj;
 
 };
 
