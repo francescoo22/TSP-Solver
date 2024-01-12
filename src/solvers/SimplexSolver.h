@@ -23,6 +23,8 @@ private:
 
     static char **from_string(const std::string &s);
 
+    static bool equal(double a, double b);
+
     Path solution_path(CPXENVptr env, CPXLPptr lp);
 
     void setupLP(CPXENVptr env, CPXLPptr lp, int size, const Graph &graph);

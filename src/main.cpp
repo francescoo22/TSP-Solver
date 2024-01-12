@@ -8,7 +8,7 @@
 #include "Point.h"
 
 int main() {
-    std::string file = "../inputs/tsp30.dat";
+    std::string file = "../inputs/tsp50.dat";
     std::ofstream simplex_out("../outputs/simplex.txt");
     std::ofstream opt_out("../outputs/2-opt_trace.txt");
     std::ofstream ts_out("../outputs/ts_trace.txt");
@@ -17,7 +17,7 @@ int main() {
     Graph graph = Graph::from_file(file);
     Path path(graph.size());
 
-    std::cout << std::string(graph);
+    std::cout << graph.as_string();
 
     // ************ SIMPLEX SOLUTION ************
     SimplexSolver simplex_solver;

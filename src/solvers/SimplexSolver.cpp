@@ -14,7 +14,14 @@ std::string SimplexSolver::evaluated_trace_as_string(const Graph &graph) const {
     ss << "******************* SIMPLEX SOLUTION = "
        << graph.eval_path(solution)
        << " *******************\n"
-       << solution.as_string();
+       << solution.as_string()
+       << "\n[";
+    auto points = graph.points_of_path(solution);
+    for (int i = 0; i < points.size(); i++) {
+        ss << points[i].as_string();
+        if (i != points.size() - 1) ss << ", ";
+    }
+    ss << "]";
     return ss.str();
 }
 
@@ -169,15 +176,27 @@ Path SimplexSolver::solution_path(CPXENVptr env, CPXLPptr lp) {
     CPXgetx(env, lp, &var_values[0], 0, var_values.size() - 1);
     for (int i = 0; i < var_values.size(); i++) {
         auto [c, a, b] = index_to_tuple[i];
-        if (c == 'y' && var_values[i] == 1) arcs.emplace_back(a, b);
+        if (c == 'y' && equal(var_values[i], 1)) {
+            arcs.emplace_back(a, b);
+        }
     }
     std::sort(arcs.begin(), arcs.end());
     std::vector<int> ans;
+
+    for (auto [a, b]: arcs) {
+        std::cout << "y_" << a << "_" << b << std::endl;
+    }
+
     auto [cur, next] = arcs[0];
     do {
+
         ans.push_back(cur);
         cur = next;
         next = arcs[cur].second;
     } while (cur != 0);
     return Path(ans);
+}
+
+bool SimplexSolver::equal(double a, double b) {
+    return std::abs(a - b) < 0.0001;
 }

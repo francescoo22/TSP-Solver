@@ -4,6 +4,7 @@
 
 #include <fstream>
 #include <iostream>
+#include <sstream>
 #include <algorithm>
 #include <random>
 #include "Graph.h"
@@ -18,14 +19,14 @@ Graph::Graph(const std::vector<Point> &points) {
             _adj[i][j] = _adj[j][i] = points[i].distance(points[j]);
 }
 
-Graph::operator std::string() const {
-    std::string res;
-    res += std::to_string(_size) + "\n";
+std::string Graph::as_string() const {
+    std::stringstream ss;
+    ss << _size << "\n";
     for (const auto &v: _adj) {
-        for (double x: v) res += std::to_string(x) + " ";
-        res += "\n";
+        for (double x: v) ss << x << " ";
+        ss << "\n";
     }
-    return res;
+    return ss.str();
 }
 
 double Graph::eval_path(const Path &path) const {
@@ -50,7 +51,7 @@ double Graph::neighbour_delta(const Path &path, int i, int j) const {
     return -_adj[from][prev_from] - _adj[to][next_to] + _adj[from][next_to] + _adj[to][prev_from];
 }
 
-unsigned long Graph::size() const {
+int Graph::size() const {
     return _size;
 }
 
@@ -86,4 +87,12 @@ Graph Graph::from_file(const std::string &file) {
     }
     in.close();
     return Graph(points);
+}
+
+const std::vector<Point> &Graph::points_of_path(const Path &path) const {
+    auto *res = new std::vector<Point>;
+    for (int i: path.as_vector()) {
+        res->push_back(_points[i]);
+    }
+    return *res;
 }

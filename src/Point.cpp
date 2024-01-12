@@ -3,6 +3,7 @@
 //
 
 #include <complex>
+#include <sstream>
 #include "Point.h"
 
 Point::Point(double x, double y) : x(x), y(y) {}
@@ -15,5 +16,7 @@ double Point::distance(const Point &p) const {
 }
 
 std::string Point::as_string() const {
-    return "(" + std::to_string(x) + ", " + std::to_string(y) + ")";
+    std::stringstream ss;
+    ss << "(" << x << ", " << y << ")";
+    return ss.str();
 }

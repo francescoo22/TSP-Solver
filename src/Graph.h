@@ -14,9 +14,9 @@ class Graph {
 public:
     explicit Graph(const std::vector<Point> &points);
 
-    explicit operator std::string() const;
+    [[nodiscard]] std::string as_string() const;
 
-    [[nodiscard]] unsigned long size() const;
+    [[nodiscard]] int size() const;
 
     [[nodiscard]] double get_edge(int i, int j) const;
 
@@ -25,6 +25,8 @@ public:
     [[nodiscard]] double neighbour_delta(const Path &path, int i, int j) const;
 
     [[nodiscard]] Path get_random_path() const;
+
+    [[nodiscard]] const std::vector<Point> &points_of_path(const Path &path) const;
 
     static void generate_input(int size);
 
