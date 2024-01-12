@@ -14,6 +14,7 @@ std::string SimplexSolver::evaluated_trace_as_string(const Graph &graph) const {
     ss << "******************* SIMPLEX SOLUTION = "
        << graph.eval_path(solution)
        << " *******************\n"
+       << "Execution time: " << execution_time_milliseconds << " ms\n"
        << solution.as_string()
        << "\n[";
     auto points = graph.points_of_path(solution);
@@ -25,31 +26,17 @@ std::string SimplexSolver::evaluated_trace_as_string(const Graph &graph) const {
     return ss.str();
 }
 
-Path SimplexSolver::solve(const Graph &graph, const Path &initial_path) {
-    int status;
-    auto env = CPXopenCPLEX(&status);
-    auto lp = CPXcreateprob(env, &status, "");
-    tuple_to_index.clear();
-    index_to_tuple.clear();
-
-    setupLP(env, lp, graph.size(), graph);
-
-    // write the model
+Path SimplexSolver::_solve(const Graph &graph, const Path &initial_path) {
+    setupLP(graph.size(), graph);
     CPXwriteprob(env, lp, "../outputs/simplex_model.lp", nullptr);
-
-    // solve
     CPXmipopt(env, lp);
-
-    // get obj_val
     double obj_val;
     CPXgetobjval(env, lp, &obj_val);
     std::cout << "Objval: " << obj_val << std::endl;
-    if (graph.size() == 12) assert(std::abs(obj_val - 66.4) < 0.1);
 
     CPXsolwrite(env, lp, "../outputs/simplex_sol.sol");
 
     Path res = solution_path(env, lp);
-    solution = res;
 
     CPXfreeprob(env, &lp);
     CPXcloseCPLEX(&env);
@@ -63,7 +50,7 @@ char **SimplexSolver::from_string(const std::string &s) {
     return stringArray;
 }
 
-void SimplexSolver::setupLP(CPXENVptr env, CPXLPptr lp, int size, const Graph &graph) {
+void SimplexSolver::setupLP(int size, const Graph &graph) {
     int cur_index = 0;
 
     for (int i = 0; i < size; i++) {
@@ -199,4 +186,11 @@ Path SimplexSolver::solution_path(CPXENVptr env, CPXLPptr lp) {
 
 bool SimplexSolver::equal(double a, double b) {
     return std::abs(a - b) < 0.0001;
+}
+
+void SimplexSolver::_reset() {
+    env = CPXopenCPLEX(&status);
+    lp = CPXcreateprob(env, &status, "");
+    tuple_to_index.clear();
+    index_to_tuple.clear();
 }

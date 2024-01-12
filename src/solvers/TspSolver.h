@@ -8,15 +8,21 @@
 
 #include "../Path.h"
 #include "../Graph.h"
+#include "../Timer.h"
 
 class TspSolver {
 public:
-    [[nodiscard]] virtual Path solve(const Graph &graph, const Path &initial_path) = 0;
+    const Path &solve(const Graph &graph, const Path &initial_path);
 
     [[nodiscard]] virtual std::string evaluated_trace_as_string(const Graph &graph) const = 0;
 
 protected:
-    std::vector<Path> trace;
+    Path solution;
+    unsigned execution_time_milliseconds{};
+
+    [[nodiscard]] virtual Path _solve(const Graph &graph, const Path &initial_path) = 0;
+
+    virtual void _reset() = 0;
 };
 
 

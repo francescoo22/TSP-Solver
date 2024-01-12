@@ -14,8 +14,6 @@ class TabuSearchSolver : public NeighbourhoodSolver {
 public:
     explicit TabuSearchSolver(int tabu_list_length, int max_iterations);
 
-    [[nodiscard]] Path solve(const Graph &graph, const Path &initial_path) override;
-
     [[nodiscard]] std::string evaluated_trace_as_string(const Graph &graph) const override;
 
     [[nodiscard]] Path best_neighbour(const Graph &graph, const Path &path);
@@ -25,7 +23,10 @@ private:
     std::map<Path, bool> tabu_map;
     int tabu_list_length;
     int max_iterations;
-    Path solution;
+
+    [[nodiscard]] Path _solve(const Graph &graph, const Path &initial_path) override;
+
+    void _reset() override;
 
     // ********** STOPPING CRITERIA **********
     // TODO: refactor stopping criteria

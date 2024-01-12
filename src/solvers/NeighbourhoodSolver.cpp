@@ -12,3 +12,7 @@ std::string NeighbourhoodSolver::evaluated_trace_as_string(const Graph &graph) c
     }
     return ss.str();
 }
+
+void NeighbourhoodSolver::_reset() {
+    trace.clear();
+}

@@ -12,14 +12,18 @@
 
 class SimplexSolver : public TspSolver {
 public:
-    Path solve(const Graph &graph, const Path &initial_path) override;
-
     [[nodiscard]] std::string evaluated_trace_as_string(const Graph &graph) const override;
 
 private:
+    int status;
+    cpxenv *env;
+    cpxlp *lp;
     std::map<std::tuple<char, int, int>, int> tuple_to_index;
     std::map<int, std::tuple<char, int, int>> index_to_tuple;
-    Path solution;
+
+    Path _solve(const Graph &graph, const Path &initial_path) override;
+
+    void _reset() override;
 
     static char **from_string(const std::string &s);
 
@@ -27,7 +31,7 @@ private:
 
     Path solution_path(CPXENVptr env, CPXLPptr lp);
 
-    void setupLP(CPXENVptr env, CPXLPptr lp, int size, const Graph &graph);
+    void setupLP(int size, const Graph &graph);
 };
 
 

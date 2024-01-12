@@ -14,6 +14,8 @@ public:
 
 protected:
     std::vector<Path> trace;
+
+    void _reset() override;
 };
 
 

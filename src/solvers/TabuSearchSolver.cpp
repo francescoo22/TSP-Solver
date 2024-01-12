@@ -9,11 +9,7 @@
 TabuSearchSolver::TabuSearchSolver(int tabu_list_length, int max_iterations) : tabu_list_length(tabu_list_length),
                                                                                max_iterations(max_iterations) {}
 
-Path TabuSearchSolver::solve(const Graph &graph, const Path &initial_path) {
-    tabu_map.clear();
-    tabu_list.clear();
-    trace.clear();
-
+Path TabuSearchSolver::_solve(const Graph &graph, const Path &initial_path) {
     trace.push_back(initial_path);
 
     Path best_path = initial_path;
@@ -24,8 +20,6 @@ Path TabuSearchSolver::solve(const Graph &graph, const Path &initial_path) {
         // TODO: try to avoid evaluation
         if (graph.eval_path(best_path) > graph.eval_path(cur_path)) best_path = cur_path;
     }
-
-    solution = best_path;
     return best_path;
 }
 
@@ -34,6 +28,7 @@ std::string TabuSearchSolver::evaluated_trace_as_string(const Graph &graph) cons
     ss << "******************* TABU SEARCH SOLUTION = "
        << graph.eval_path(solution)
        << " *******************\n"
+       << "Execution time: " << execution_time_milliseconds << " ms\n"
        << NeighbourhoodSolver::evaluated_trace_as_string(graph);
     return ss.str();
 }
@@ -66,4 +61,10 @@ Path TabuSearchSolver::best_neighbour(const Graph &graph, const Path &path) {
     tabu_list.push_front(best_neighbour);
 
     return best_neighbour;
+}
+
+void TabuSearchSolver::_reset() {
+    NeighbourhoodSolver::_reset();
+    tabu_map.clear();
+    tabu_list.clear();
 }

@@ -55,8 +55,8 @@ int Graph::size() const {
     return _size;
 }
 
-void Graph::generate_input(int size) {
-    std::ofstream out("../inputs/tsp" + std::to_string(size) + ".dat");
+void Graph::generate_input(const std::string &filename, int size) {
+    std::ofstream out("../inputs/" + filename + ".dat");
     std::uniform_real_distribution<double> distribution(0, 100);
     auto rd = std::random_device{};
     auto rng = std::default_random_engine{rd()};

@@ -5,19 +5,18 @@
 #include "TwoOptSolver.h"
 #include <sstream>
 
-Path TwoOptSolver::solve(const Graph &graph, const Path &initial_path) {
-//    TODO: make non-recursive and clear trace at the beginning
-
-    auto [i, j] = best_neighbour(graph, initial_path);
-    Path best_neighbour_path = initial_path.reverse_sub_path(i, j);
-    double initial_cost = graph.eval_path(initial_path);
-    double best_neighbour_cost = graph.eval_path(best_neighbour_path);
-    trace.push_back(initial_path);
-    if (best_neighbour_cost >= initial_cost) {
-        return initial_path;
-    } else {
-        return solution = solve(graph, best_neighbour_path);
-    }
+Path TwoOptSolver::_solve(const Graph &graph, const Path &initial_path) {
+    double best_neighbour_cost, previous_cost;
+    Path previous_path = initial_path;
+    do {
+        auto [i, j] = best_neighbour(graph, previous_path);
+        Path best_neighbour_path = previous_path.reverse_sub_path(i, j);
+        previous_cost = graph.eval_path(previous_path);
+        best_neighbour_cost = graph.eval_path(best_neighbour_path);
+        trace.push_back(previous_path);
+        previous_path = best_neighbour_path;
+    } while (best_neighbour_cost < previous_cost);
+    return previous_path;
 }
 
 std::string TwoOptSolver::evaluated_trace_as_string(const Graph &graph) const {
@@ -25,6 +24,7 @@ std::string TwoOptSolver::evaluated_trace_as_string(const Graph &graph) const {
     ss << "******************* 2-OPT SOLUTION = "
        << graph.eval_path(solution)
        << " *******************\n"
+       << "Execution time: " << execution_time_milliseconds << " ms\n"
        << NeighbourhoodSolver::evaluated_trace_as_string(graph);
     return ss.str();
 }
