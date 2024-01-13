@@ -18,7 +18,7 @@ Path TwoOptSolver::_solve(const Graph &graph, const Path &initial_path) {
         trace.push_back(previous_path);
         previous_path = best_neighbour_path;
     } while (best_neighbour_cost < previous_cost && timer.get_time_milliseconds() < time_limit * 1000);
-    return previous_path;
+    return trace.back();
 }
 
 std::string TwoOptSolver::evaluated_trace_as_string(const Graph &graph) const {

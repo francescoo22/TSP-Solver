@@ -10,28 +10,41 @@
 #include <map>
 #include "NeighbourhoodSolver.h"
 
+enum class StoppingCriteria {
+    UNKNOWN,
+    MAX_ITERATIONS,
+    MAX_NON_INCREASING_ITERATIONS,
+    TIME_LIMIT
+};
+
 class TabuSearchSolver : public NeighbourhoodSolver {
 public:
-    explicit TabuSearchSolver(int tabu_list_length, int max_non_increasing_iterations, unsigned int time_limit = 0);
+    explicit TabuSearchSolver(unsigned int tabu_list_length,
+                              unsigned int max_iterations = NO_LIMIT,
+                              unsigned int max_non_increasing_iterations = NO_LIMIT,
+                              unsigned long long int time_limit = NO_LIMIT);
 
     [[nodiscard]] std::string evaluated_trace_as_string(const Graph &graph) const override;
 
     [[nodiscard]] Path best_neighbour(const Graph &graph, const Path &path);
 
+    static const unsigned int NO_LIMIT = 1000000000;
+
+    static std::string as_string(StoppingCriteria criteria);
+
 private:
     std::deque<Path> tabu_list;
     std::map<Path, bool> tabu_map;
-    int tabu_list_length;
-    int max_non_increasing_iterations;
+    unsigned int tabu_list_length;
+    unsigned int max_iterations;
+    unsigned int max_non_increasing_iterations;
+    StoppingCriteria stopping_criteria;
 
     [[nodiscard]] Path _solve(const Graph &graph, const Path &initial_path) override;
 
-    void _reset() override;
+    bool stop(unsigned iterations, unsigned non_increasing_iterations, const Timer &timer);
 
-    // ********** STOPPING CRITERIA **********
-    // TODO: refactor stopping criteria
-//    int max_iterations, time_limit, max_not_improving_iterations;
-    // TODO: Empty neighbourhood and no overruling
+    void _reset() override;
 };
 
 

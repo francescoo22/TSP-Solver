@@ -5,10 +5,14 @@
 #include <sstream>
 #include "TabuSearchSolver.h"
 
-TabuSearchSolver::TabuSearchSolver(int tabu_list_length, int max_non_increasing_iterations, unsigned int time_limit)
+TabuSearchSolver::TabuSearchSolver(unsigned int tabu_list_length, unsigned int max_iterations,
+                                   unsigned int max_non_increasing_iterations,
+                                   unsigned long long int time_limit)
         : NeighbourhoodSolver(time_limit),
           tabu_list_length(tabu_list_length),
-          max_non_increasing_iterations(max_non_increasing_iterations) {}
+          max_iterations(max_iterations),
+          max_non_increasing_iterations(max_non_increasing_iterations),
+          stopping_criteria(StoppingCriteria::UNKNOWN) {}
 
 Path TabuSearchSolver::_solve(const Graph &graph, const Path &initial_path) {
     Timer timer;
@@ -18,10 +22,8 @@ Path TabuSearchSolver::_solve(const Graph &graph, const Path &initial_path) {
     Path best_path = initial_path;
     Path cur_path = initial_path;
     double best_sol = graph.eval_path(initial_path);
-    int non_increasing_iterations = 0;
-//    for (int i = 0; i < max_non_increasing_iterations; i++) {
-    while (non_increasing_iterations < max_non_increasing_iterations &&
-           timer.get_time_milliseconds() < time_limit * 1000) {
+    int iterations = 0, non_increasing_iterations = 0;
+    while (!stop(iterations, non_increasing_iterations, timer)) {
         cur_path = best_neighbour(graph, cur_path);
         double cur_sol = graph.eval_path(cur_path);
         trace.push_back(cur_path);
@@ -32,16 +34,16 @@ Path TabuSearchSolver::_solve(const Graph &graph, const Path &initial_path) {
         } else {
             non_increasing_iterations++;
         }
+        iterations++;
     }
     return best_path;
 }
 
 std::string TabuSearchSolver::evaluated_trace_as_string(const Graph &graph) const {
     std::stringstream ss;
-    ss << "******************* TABU SEARCH SOLUTION = "
-       << graph.eval_path(solution)
-       << " *******************\n"
+    ss << "Solution: " << graph.eval_path(solution) << "\n"
        << "Execution time: " << execution_time_milliseconds << " ms\n"
+       << "Stopping criteria: " << as_string(stopping_criteria) << "\n"
        << NeighbourhoodSolver::evaluated_trace_as_string(graph);
     return ss.str();
 }
@@ -80,4 +82,30 @@ void TabuSearchSolver::_reset() {
     NeighbourhoodSolver::_reset();
     tabu_map.clear();
     tabu_list.clear();
+}
+
+bool TabuSearchSolver::stop(unsigned int iterations, unsigned int non_increasing_iterations, const Timer &timer) {
+    if (iterations > max_iterations)
+        stopping_criteria = StoppingCriteria::MAX_ITERATIONS;
+    else if (non_increasing_iterations > max_non_increasing_iterations)
+        stopping_criteria = StoppingCriteria::MAX_NON_INCREASING_ITERATIONS;
+    else if (timer.get_time_milliseconds() > time_limit * 1000)
+        stopping_criteria = StoppingCriteria::TIME_LIMIT;
+    else return false;
+    return true;
+}
+
+std::string TabuSearchSolver::as_string(StoppingCriteria criteria) {
+    switch (criteria) {
+        case StoppingCriteria::UNKNOWN:
+            return "UNKNOWN";
+        case StoppingCriteria::MAX_ITERATIONS:
+            return "MAX_ITERATIONS";
+        case StoppingCriteria::MAX_NON_INCREASING_ITERATIONS:
+            return "MAX_NON_INCREASING_ITERATIONS";
+        case StoppingCriteria::TIME_LIMIT:
+            return "TIME_LIMIT";
+        default:
+            return "Invalid StoppingCriteria";
+    }
 }

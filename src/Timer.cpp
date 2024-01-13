@@ -9,7 +9,7 @@ void Timer::start() {
     _start_time = std::chrono::high_resolution_clock::now();
 }
 
-unsigned Timer::get_time_milliseconds() {
+unsigned Timer::get_time_milliseconds() const {
     auto current_time = std::chrono::high_resolution_clock::now();
     auto ms_int = duration_cast<std::chrono::milliseconds>(current_time - _start_time);
     return ms_int.count();

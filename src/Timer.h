@@ -11,7 +11,7 @@ class Timer {
 public:
     void start();
 
-    unsigned get_time_milliseconds();
+    [[nodiscard]] unsigned get_time_milliseconds() const;
 
 private:
     std::chrono::time_point<std::chrono::high_resolution_clock> _start_time;
