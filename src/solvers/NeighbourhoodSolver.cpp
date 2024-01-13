@@ -16,3 +16,5 @@ std::string NeighbourhoodSolver::evaluated_trace_as_string(const Graph &graph) c
 void NeighbourhoodSolver::_reset() {
     trace.clear();
 }
+
+NeighbourhoodSolver::NeighbourhoodSolver(unsigned int time_limit) : TspSolver(time_limit) {}

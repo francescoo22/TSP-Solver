@@ -12,7 +12,7 @@
 
 class TabuSearchSolver : public NeighbourhoodSolver {
 public:
-    explicit TabuSearchSolver(int tabu_list_length, int max_iterations);
+    explicit TabuSearchSolver(int tabu_list_length, int max_non_increasing_iterations, unsigned int time_limit = 0);
 
     [[nodiscard]] std::string evaluated_trace_as_string(const Graph &graph) const override;
 
@@ -22,7 +22,7 @@ private:
     std::deque<Path> tabu_list;
     std::map<Path, bool> tabu_map;
     int tabu_list_length;
-    int max_iterations;
+    int max_non_increasing_iterations;
 
     [[nodiscard]] Path _solve(const Graph &graph, const Path &initial_path) override;
 

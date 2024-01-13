@@ -12,3 +12,5 @@ const Path &TspSolver::solve(const Graph &graph, const Path &initial_path) {
     execution_time_milliseconds = timer.get_time_milliseconds();
     return solution;
 }
+
+TspSolver::TspSolver(unsigned int time_limit) : time_limit(time_limit), execution_time_milliseconds(0) {}

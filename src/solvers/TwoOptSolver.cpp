@@ -6,6 +6,8 @@
 #include <sstream>
 
 Path TwoOptSolver::_solve(const Graph &graph, const Path &initial_path) {
+    Timer timer;
+    timer.start();
     double best_neighbour_cost, previous_cost;
     Path previous_path = initial_path;
     do {
@@ -15,7 +17,7 @@ Path TwoOptSolver::_solve(const Graph &graph, const Path &initial_path) {
         best_neighbour_cost = graph.eval_path(best_neighbour_path);
         trace.push_back(previous_path);
         previous_path = best_neighbour_path;
-    } while (best_neighbour_cost < previous_cost);
+    } while (best_neighbour_cost < previous_cost && timer.get_time_milliseconds() < time_limit * 1000);
     return previous_path;
 }
 
@@ -47,3 +49,5 @@ std::pair<int, int> TwoOptSolver::best_neighbour(const Graph &graph, const Path 
     }
     return best_neighbour;
 }
+
+TwoOptSolver::TwoOptSolver(unsigned int time_limit) : NeighbourhoodSolver(time_limit) {}

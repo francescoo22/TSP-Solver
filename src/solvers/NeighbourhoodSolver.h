@@ -10,6 +10,8 @@
 
 class NeighbourhoodSolver : public TspSolver {
 public:
+    explicit NeighbourhoodSolver(unsigned int time_limit);
+
     [[nodiscard]] std::string evaluated_trace_as_string(const Graph &graph) const override;
 
 protected:

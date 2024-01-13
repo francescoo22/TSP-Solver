@@ -26,16 +26,19 @@ std::string SimplexSolver::evaluated_trace_as_string(const Graph &graph) const {
 }
 
 Path SimplexSolver::_solve(const Graph &graph, const Path &initial_path) {
+    if (time_limit != 0) {
+        CPXsetdblparam(env, CPX_PARAM_TILIM, time_limit);
+    }
     setupLP(graph.size(), graph);
-    CPXwriteprob(env, lp, "../outputs/simplex_model.lp", nullptr);
+    CPXwriteprob(env, lp, "../outputs/simplex/simplex_model.lp", nullptr);
     CPXmipopt(env, lp);
     double obj_val;
     CPXgetobjval(env, lp, &obj_val);
     std::cout << "Objval: " << obj_val << std::endl;
 
-    CPXsolwrite(env, lp, "../outputs/simplex_sol.sol");
+    CPXsolwrite(env, lp, "../outputs/simplex/simplex_sol.sol");
 
-    Path res = solution_path(env, lp);
+    Path res = solution_path();
 
     CPXfreeprob(env, &lp);
     CPXcloseCPLEX(&env);
@@ -156,7 +159,7 @@ void SimplexSolver::setupLP(int size, const Graph &graph) {
     }
 }
 
-Path SimplexSolver::solution_path(CPXENVptr env, CPXLPptr lp) {
+Path SimplexSolver::solution_path() {
     std::vector<double> var_values(index_to_tuple.size());
     std::vector<std::pair<int, int>> arcs;
     CPXgetx(env, lp, &var_values[0], 0, var_values.size() - 1);
@@ -188,3 +191,5 @@ void SimplexSolver::_reset() {
     tuple_to_index.clear();
     index_to_tuple.clear();
 }
+
+SimplexSolver::SimplexSolver(unsigned int time_limit) : TspSolver(time_limit), status(0), env(nullptr), lp(nullptr) {}

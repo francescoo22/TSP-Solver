@@ -10,6 +10,7 @@
 
 class TwoOptSolver : public NeighbourhoodSolver {
 public:
+    explicit TwoOptSolver(unsigned int time_limit = 0);
 
     [[nodiscard]] std::string evaluated_trace_as_string(const Graph &graph) const override;
 

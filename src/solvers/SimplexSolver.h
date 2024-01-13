@@ -12,6 +12,8 @@
 
 class SimplexSolver : public TspSolver {
 public:
+    explicit SimplexSolver(unsigned int time_limit = 0);
+
     [[nodiscard]] std::string evaluated_trace_as_string(const Graph &graph) const override;
 
 private:
@@ -29,7 +31,7 @@ private:
 
     static bool equal(double a, double b);
 
-    Path solution_path(CPXENVptr env, CPXLPptr lp);
+    Path solution_path();
 
     void setupLP(int size, const Graph &graph);
 };

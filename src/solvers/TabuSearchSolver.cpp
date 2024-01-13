@@ -5,19 +5,33 @@
 #include <sstream>
 #include "TabuSearchSolver.h"
 
-TabuSearchSolver::TabuSearchSolver(int tabu_list_length, int max_iterations) : tabu_list_length(tabu_list_length),
-                                                                               max_iterations(max_iterations) {}
+TabuSearchSolver::TabuSearchSolver(int tabu_list_length, int max_non_increasing_iterations, unsigned int time_limit)
+        : NeighbourhoodSolver(time_limit),
+          tabu_list_length(tabu_list_length),
+          max_non_increasing_iterations(max_non_increasing_iterations) {}
 
 Path TabuSearchSolver::_solve(const Graph &graph, const Path &initial_path) {
+    Timer timer;
+    timer.start();
     trace.push_back(initial_path);
 
     Path best_path = initial_path;
     Path cur_path = initial_path;
-    for (int i = 0; i < max_iterations; i++) {
+    double best_sol = graph.eval_path(initial_path);
+    int non_increasing_iterations = 0;
+//    for (int i = 0; i < max_non_increasing_iterations; i++) {
+    while (non_increasing_iterations < max_non_increasing_iterations &&
+           timer.get_time_milliseconds() < time_limit * 1000) {
         cur_path = best_neighbour(graph, cur_path);
+        double cur_sol = graph.eval_path(cur_path);
         trace.push_back(cur_path);
-        // TODO: try to avoid evaluation
-        if (graph.eval_path(best_path) > graph.eval_path(cur_path)) best_path = cur_path;
+        if (best_sol > cur_sol) {
+            best_path = cur_path;
+            best_sol = cur_sol;
+            non_increasing_iterations = 0;
+        } else {
+            non_increasing_iterations++;
+        }
     }
     return best_path;
 }

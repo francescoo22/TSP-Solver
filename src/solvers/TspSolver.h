@@ -12,13 +12,16 @@
 
 class TspSolver {
 public:
+    explicit TspSolver(unsigned int time_limit);
+
     const Path &solve(const Graph &graph, const Path &initial_path);
 
     [[nodiscard]] virtual std::string evaluated_trace_as_string(const Graph &graph) const = 0;
 
 protected:
     Path solution;
-    unsigned execution_time_milliseconds{};
+    unsigned execution_time_milliseconds;
+    unsigned time_limit;
 
     [[nodiscard]] virtual Path _solve(const Graph &graph, const Path &initial_path) = 0;
 
