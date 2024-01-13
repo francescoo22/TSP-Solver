@@ -6,8 +6,8 @@
 #define TSP_SOLVER_CPP_TSPSOLVER_H
 
 
-#include "../Path.h"
-#include "../Graph.h"
+#include "../graph/Path.h"
+#include "../graph/Graph.h"
 #include "../Timer.h"
 
 class TspSolver {

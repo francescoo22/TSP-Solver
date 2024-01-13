@@ -10,10 +10,10 @@ set(CPX_LIBDIR "${CPX_BASE}/cplex/lib/x86-64_linux/static_pic/libcplex.a")
 include_directories(${CPX_INCDIR})
 
 add_executable(TSP_solver_cpp src/main.cpp
-        src/Graph.cpp
-        src/Graph.h
-        src/Path.cpp
-        src/Path.h
+        src/graph/Graph.cpp
+        src/graph/Graph.h
+        src/graph/Path.cpp
+        src/graph/Path.h
         src/solvers/TspSolver.h
         src/solvers/TwoOptSolver.cpp
         src/solvers/TwoOptSolver.h
@@ -23,8 +23,8 @@ add_executable(TSP_solver_cpp src/main.cpp
         src/solvers/SimplexSolver.h
         src/solvers/NeighbourhoodSolver.cpp
         src/solvers/NeighbourhoodSolver.h
-        src/Point.cpp
-        src/Point.h
+        src/graph/Point.cpp
+        src/graph/Point.h
         src/Timer.cpp
         src/Timer.h
         src/solvers/TspSolver.cpp)

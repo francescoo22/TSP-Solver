@@ -5,7 +5,6 @@
 #include "SimplexSolver.h"
 #include <cstring>
 #include <iostream>
-#include <cassert>
 #include <sstream>
 #include <algorithm>
 
@@ -170,13 +169,8 @@ Path SimplexSolver::solution_path(CPXENVptr env, CPXLPptr lp) {
     std::sort(arcs.begin(), arcs.end());
     std::vector<int> ans;
 
-    for (auto [a, b]: arcs) {
-        std::cout << "y_" << a << "_" << b << std::endl;
-    }
-
     auto [cur, next] = arcs[0];
     do {
-
         ans.push_back(cur);
         cur = next;
         next = arcs[cur].second;

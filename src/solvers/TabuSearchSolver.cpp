@@ -2,7 +2,6 @@
 // Created by francesco on 06/01/24.
 //
 
-#include <iostream>
 #include <sstream>
 #include "TabuSearchSolver.h"
 
