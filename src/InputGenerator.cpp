@@ -41,8 +41,8 @@ std::vector<Point> InputGenerator::generate_random_shape() {
     Shape shape = get_random_shape();
     std::vector<Point> res;
     switch (shape) {
-        case Shape::POINT:
-            res.push_back(generate_random_point());
+        case Shape::POINTS:
+            res = generate_random_points();
             break;
         case Shape::LINE:
             res = generate_random_line();
@@ -58,7 +58,7 @@ std::vector<Point> InputGenerator::generate_random_shape() {
 }
 
 Shape InputGenerator::get_random_shape() {
-    int randomValue = rand_int(static_cast<int>(Shape::POINT), static_cast<int>(Shape::CIRCLE));
+    int randomValue = rand_int(static_cast<int>(Shape::POINTS), static_cast<int>(Shape::CIRCLE));
     return static_cast<Shape>(randomValue);
 }
 
@@ -66,8 +66,16 @@ Point InputGenerator::generate_random_point() {
     return {rand_double(0, _width), rand_double(0, _height)};
 }
 
+std::vector<Point> InputGenerator::generate_random_points() {
+    int number_of_points = rand_int(3, 7);
+    std::vector<Point> res;
+    for (int i = 0; i < number_of_points; i++) {
+        res.push_back(generate_random_point());
+    }
+    return res;
+}
+
 std::vector<Point> InputGenerator::generate_random_line() {
-    std::cout << "Line\n";
     std::vector<Point> res;
     int number_of_points = rand_int(3, 7);
     double dx = rand_double(-3, 3), dy = rand_double(-3, 3);
@@ -80,7 +88,6 @@ std::vector<Point> InputGenerator::generate_random_line() {
 }
 
 std::vector<Point> InputGenerator::generate_random_rectangle() {
-    std::cout << "Rectangle\n";
     std::vector<Point> res;
     Point origin = generate_random_point();
     double width = rand_double(2, 10);
@@ -103,7 +110,6 @@ std::vector<Point> InputGenerator::generate_random_rectangle() {
 }
 
 std::vector<Point> InputGenerator::generate_random_circle() {
-    std::cout << "Circle\n";
     std::vector<Point> res;
 
     Point center = generate_random_point();

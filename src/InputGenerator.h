@@ -11,7 +11,7 @@
 #include <random>
 
 enum class Shape {
-    POINT,
+    POINTS,
     LINE,
     RECTANGLE,
     CIRCLE,
@@ -35,6 +35,8 @@ private:
     Shape get_random_shape();
 
     Point generate_random_point();
+
+    std::vector<Point> generate_random_points();
 
     std::vector<Point> generate_random_line();
 
