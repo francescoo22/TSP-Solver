@@ -27,6 +27,8 @@ add_executable(TSP_solver_cpp src/main.cpp
         src/graph/Point.h
         src/Timer.cpp
         src/Timer.h
-        src/solvers/TspSolver.cpp)
+        src/solvers/TspSolver.cpp
+        src/InputGenerator.cpp
+        src/InputGenerator.h)
 
 target_link_libraries(TSP_solver_cpp ${CPX_LIBDIR})

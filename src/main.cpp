@@ -6,6 +6,7 @@
 #include "solvers/TabuSearchSolver.h"
 #include "solvers/SimplexSolver.h"
 #include "graph/Point.h"
+#include "InputGenerator.h"
 
 int main() {
     std::string file = "../inputs/tsp1000.dat";
@@ -36,4 +37,6 @@ int main() {
     ts_out << tabu_search_solver.evaluated_trace_as_string(graph);
 
 //    Graph::generate_input("tsp500", 500);
+//    InputGenerator input_generator(100, 50);
+//    input_generator.generate_shaped_input("test", 50);
 }

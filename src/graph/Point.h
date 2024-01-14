@@ -10,14 +10,13 @@
 
 class Point {
 public:
+    double x, y;
+
     Point(double x, double y);
 
     [[nodiscard]] double distance(const Point &p) const;
 
     [[nodiscard]] std::string as_string() const;
-
-private:
-    double x, y;
 };
 
 
