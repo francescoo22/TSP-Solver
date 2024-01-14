@@ -23,19 +23,17 @@ void InputGenerator::generate_shaped_input(const std::string &filename, int numb
     std::vector<Point> points;
     for (int i = 0; i < number_of_shapes; i++) {
         std::vector<Point> shape = generate_random_shape();
+        std::vector<Point> inside_shape;
 
         for (auto p: shape) {
-            std::cout << p.as_string() << "\n";
+            if (is_inside(p)) inside_shape.push_back(p);
         }
-        std::cout << "\n";
 
-        points.insert(points.end(), shape.begin(), shape.end());
+        points.insert(points.end(), inside_shape.begin(), inside_shape.end());
     }
     out << points.size() << "\n";
     for (Point point: points) {
-        if (is_inside(point)) {
-            out << point.x << " " << point.y << "\n";
-        }
+        out << point.x << " " << point.y << "\n";
     }
 }
 
