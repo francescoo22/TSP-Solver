@@ -3,4 +3,5 @@ cmake-build-debug/
 outputs/
 bin/
 plot/order.dat
-*gif
+*.gif
+*.pdf
