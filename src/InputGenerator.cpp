@@ -35,6 +35,7 @@ void InputGenerator::generate_shaped_input(const std::string &filename, int numb
     for (Point point: points) {
         out << point.x << " " << point.y << "\n";
     }
+    out.close();
 }
 
 std::vector<Point> InputGenerator::generate_random_shape() {
@@ -97,13 +98,25 @@ std::vector<Point> InputGenerator::generate_random_rectangle() {
     for (int i = 0; i < points_on_side; i++) {
         double dx = i * (width / points_on_side);
         res.emplace_back(origin.x + dx, origin.y);
-        res.emplace_back(origin.x + dx + (width / points_on_side), origin.y + height);
+//        res.emplace_back(origin.x + dx + (width / points_on_side), origin.y + height);
     }
 
     for (int i = 0; i < points_on_side; i++) {
         double dy = i * (height / points_on_side);
-        res.emplace_back(origin.x, origin.y + dy + (height / points_on_side));
         res.emplace_back(origin.x + width, origin.y + dy);
+//        res.emplace_back(origin.x + width, origin.y + dy);
+    }
+
+    for (int i = 0; i < points_on_side; i++) {
+        double dx = i * (width / points_on_side);
+//        res.emplace_back(origin.x + dx, origin.y);
+        res.emplace_back(origin.x + width - dx, origin.y + height);
+    }
+
+    for (int i = 0; i < points_on_side; i++) {
+        double dy = i * (height / points_on_side);
+//        res.emplace_back(origin.x, origin.y + dy + (height / points_on_side));
+        res.emplace_back(origin.x, origin.y + height - dy);
     }
 
     return res;

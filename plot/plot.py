@@ -1,6 +1,6 @@
 import matplotlib.pyplot as plt
 
-file_path = '../src/inputs/shaped.dat'
+file_path = '../inputs/shaped.dat'
 with open(file_path, 'r') as file:
     num_points = int(file.readline().strip())
     lines = file.readlines()

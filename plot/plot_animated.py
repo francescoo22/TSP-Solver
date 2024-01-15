@@ -1,8 +1,10 @@
 import matplotlib.pyplot as plt
+from matplotlib.animation import FuncAnimation
 import re
 
 file_path_points = '../inputs/shaped.dat'
 file_path_order = 'order.dat'
+output_gif_path = 'animated_plot.gif'
 
 with open(file_path_points, 'r') as file:
     num_points = int(file.readline().strip())
@@ -22,18 +24,25 @@ for order_str in order_lines:
     order = list(map(int, re.findall(r'\d+', order_str)))
     order_lists.append(order)
 
-for idx, order_list in enumerate(order_lists, start=1):
-    plt.figure(figsize=(8, 6))
+fig, ax = plt.subplots(figsize=(8, 6))
 
+
+def update(frame):
+    order_list = order_lists[frame]
+
+    plt.clf()
     plt.scatter(x_coordinates, y_coordinates, color='blue', marker='.')
 
     for i in range(-1, len(order_list) - 1):
         plt.plot([x_coordinates[order_list[i]], x_coordinates[order_list[i + 1]]],
                  [y_coordinates[order_list[i]], y_coordinates[order_list[i + 1]]], color='red')
 
-    plt.title(f'Scatter Plot with Line Segments - Order List {idx}')
-    plt.xlabel('X Coordinate')
-    plt.ylabel('Y Coordinate')
-    plt.grid(True)
+    plt.pause(0.02)
+
+
+ani = FuncAnimation(fig, update, frames=len(order_lists), repeat=False)
+
+# Save the animation as a GIF
+ani.save(output_gif_path, writer='pillow', fps=2)
 
 plt.show()
