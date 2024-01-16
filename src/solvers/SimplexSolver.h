@@ -21,7 +21,7 @@ private:
     cpxenv *env;
     cpxlp *lp;
     std::map<std::tuple<char, int, int>, int> tuple_to_index;
-    std::map<int, std::tuple<char, int, int>> index_to_tuple;
+    std::vector<std::tuple<char, int, int>> index_to_tuple;
 
     Path _solve(const Graph &graph, const Path &initial_path) override;
 

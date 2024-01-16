@@ -62,7 +62,7 @@ void SimplexSolver::setupLP(int size, const Graph &graph) {
             double ub = 1;
             double cost = graph.get_edge(i, j);
             std::string var_name = "y_" + std::to_string(i) + "_" + std::to_string(j);
-            index_to_tuple[cur_index] = {'y', i, j};
+            index_to_tuple.emplace_back('y', i, j);
             tuple_to_index[{'y', i, j}] = cur_index++;
             CPXnewcols(env, lp, 1, &cost, &lb, &ub, &xtype, from_string(var_name));
         }
@@ -75,7 +75,7 @@ void SimplexSolver::setupLP(int size, const Graph &graph) {
             double ub = CPX_INFBOUND;
             double cost = 0;
             std::string var_name = "x_" + std::to_string(i) + "_" + std::to_string(j);
-            index_to_tuple[cur_index] = {'x', i, j};
+            index_to_tuple.emplace_back('x', i, j);
             tuple_to_index[{'x', i, j}] = cur_index++;
             CPXnewcols(env, lp, 1, &cost, &lb, &ub, &xtype, from_string(var_name));
         }
