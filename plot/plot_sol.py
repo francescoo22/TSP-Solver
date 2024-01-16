@@ -1,7 +1,7 @@
 import matplotlib.pyplot as plt
 import re
 
-file_path_points = '../inputs/shaped.dat'
+file_path_points = 'points.dat'
 file_path_order = 'order.dat'
 
 with open(file_path_points, 'r') as file:

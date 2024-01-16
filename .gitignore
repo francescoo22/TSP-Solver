@@ -3,5 +3,7 @@ cmake-build-debug/
 outputs/
 bin/
 plot/order.dat
+plot/points.dat
+plot/randomizer.py
 *.gif
 *.pdf

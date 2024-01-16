@@ -1,6 +1,6 @@
 import matplotlib.pyplot as plt
 
-file_path = '../inputs/shaped.dat'
+file_path = 'points.dat'
 with open(file_path, 'r') as file:
     num_points = int(file.readline().strip())
     lines = file.readlines()
@@ -12,7 +12,7 @@ if num_points != len(points):
 
 x_coordinates, y_coordinates = zip(*points)
 
-plt.scatter(x_coordinates, y_coordinates, color='blue', marker='.')
+plt.scatter(x_coordinates, y_coordinates, color='blue', marker='o')
 plt.title('Scatter Plot of Points')
 plt.xlabel('X Coordinate')
 plt.ylabel('Y Coordinate')
