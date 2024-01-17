@@ -23,7 +23,7 @@ public:
 
     void generate_input(const std::string &filename, int size);
 
-    void generate_shaped_input(const std::string &filename, int number_of_shapes);
+    void generate_shaped_input(const std::string &filename, int number_of_shapes, int max_points = -1);
 
     std::vector<Point> generate_random_shape();
 
@@ -45,6 +45,8 @@ private:
     std::vector<Point> generate_random_circle();
 
     double rand_double(double from, double to);
+
+    static double round_to_two_decimals(double value);
 
     int rand_int(int from, int to);
 

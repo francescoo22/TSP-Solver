@@ -18,7 +18,7 @@ void InputGenerator::generate_input(const std::string &filename, int size) {
     }
 }
 
-void InputGenerator::generate_shaped_input(const std::string &filename, int number_of_shapes) {
+void InputGenerator::generate_shaped_input(const std::string &filename, int number_of_shapes, int max_points) {
     std::ofstream out("../inputs/" + filename + ".dat");
     std::vector<Point> points;
     for (int i = 0; i < number_of_shapes; i++) {
@@ -31,6 +31,15 @@ void InputGenerator::generate_shaped_input(const std::string &filename, int numb
 
         points.insert(points.end(), inside_shape.begin(), inside_shape.end());
     }
+    if (max_points > 0 && points.size() > max_points) {
+        points = std::vector<Point>(points.begin(), points.begin() + max_points);
+    }
+
+    for (Point &p: points) {
+        p.x = round_to_two_decimals(p.x);
+        p.y = round_to_two_decimals(p.y);
+    }
+
     out << points.size() << "\n";
     for (Point point: points) {
         out << point.x << " " << point.y << "\n";
@@ -98,24 +107,20 @@ std::vector<Point> InputGenerator::generate_random_rectangle() {
     for (int i = 0; i < points_on_side; i++) {
         double dx = i * (width / points_on_side);
         res.emplace_back(origin.x + dx, origin.y);
-//        res.emplace_back(origin.x + dx + (width / points_on_side), origin.y + height);
     }
 
     for (int i = 0; i < points_on_side; i++) {
         double dy = i * (height / points_on_side);
         res.emplace_back(origin.x + width, origin.y + dy);
-//        res.emplace_back(origin.x + width, origin.y + dy);
     }
 
     for (int i = 0; i < points_on_side; i++) {
         double dx = i * (width / points_on_side);
-//        res.emplace_back(origin.x + dx, origin.y);
         res.emplace_back(origin.x + width - dx, origin.y + height);
     }
 
     for (int i = 0; i < points_on_side; i++) {
         double dy = i * (height / points_on_side);
-//        res.emplace_back(origin.x, origin.y + dy + (height / points_on_side));
         res.emplace_back(origin.x, origin.y + height - dy);
     }
 
@@ -151,4 +156,10 @@ int InputGenerator::rand_int(int from, int to) {
 
 bool InputGenerator::is_inside(Point p) const {
     return p.x >= 0 && p.y >= 0 && p.x <= _width && p.y <= _height;
+}
+
+double InputGenerator::round_to_two_decimals(double value) {
+    double shifted_value = value * 100.0;
+    double rounded_value = std::round(shifted_value);
+    return rounded_value / 100.0;
 }

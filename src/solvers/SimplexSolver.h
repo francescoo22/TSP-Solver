@@ -14,7 +14,7 @@ class SimplexSolver : public TspSolver {
 public:
     explicit SimplexSolver(unsigned int time_limit = 0);
 
-    [[nodiscard]] std::string evaluated_trace_as_string(const Graph &graph) const override;
+    [[nodiscard]] std::string evaluated_trace_as_string(const Graph &graph, bool extended) const override;
 
 private:
     int status;

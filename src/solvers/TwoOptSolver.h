@@ -12,7 +12,7 @@ class TwoOptSolver : public NeighbourhoodSolver {
 public:
     explicit TwoOptSolver(unsigned int time_limit = 0);
 
-    [[nodiscard]] std::string evaluated_trace_as_string(const Graph &graph) const override;
+    [[nodiscard]] std::string evaluated_trace_as_string(const Graph &graph, bool extended) const override;
 
     [[nodiscard]] static std::pair<int, int> best_neighbour(const Graph &graph, const Path &path);
 

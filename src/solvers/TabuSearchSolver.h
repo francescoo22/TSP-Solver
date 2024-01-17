@@ -24,7 +24,7 @@ public:
                               unsigned int max_non_increasing_iterations = NO_LIMIT,
                               unsigned long long int time_limit = NO_LIMIT);
 
-    [[nodiscard]] std::string evaluated_trace_as_string(const Graph &graph) const override;
+    [[nodiscard]] std::string evaluated_trace_as_string(const Graph &graph, bool extended) const override;
 
     [[nodiscard]] Path best_neighbour(const Graph &graph, const Path &path);
 

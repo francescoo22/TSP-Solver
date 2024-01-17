@@ -16,7 +16,7 @@ public:
 
     const Path &solve(const Graph &graph, const Path &initial_path);
 
-    [[nodiscard]] virtual std::string evaluated_trace_as_string(const Graph &graph) const = 0;
+    [[nodiscard]] virtual std::string evaluated_trace_as_string(const Graph &graph, bool extended) const = 0;
 
 protected:
     Path solution;

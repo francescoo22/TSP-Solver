@@ -39,12 +39,13 @@ Path TabuSearchSolver::_solve(const Graph &graph, const Path &initial_path) {
     return best_path;
 }
 
-std::string TabuSearchSolver::evaluated_trace_as_string(const Graph &graph) const {
+std::string TabuSearchSolver::evaluated_trace_as_string(const Graph &graph, bool extended) const {
     std::stringstream ss;
-    ss << "Solution: " << graph.eval_path(solution) << "\n"
-       << "Execution time: " << execution_time_milliseconds << " ms\n"
-       << "Stopping criteria: " << as_string(stopping_criteria) << "\n"
-       << NeighbourhoodSolver::evaluated_trace_as_string(graph);
+    ss << "Execution time: " << execution_time_milliseconds << " ms\n"
+       << "Solution value: " << graph.eval_path(solution) << "\n"
+       << "Solution path: " << solution.as_string() << "\n"
+       << "Stopping criteria: " << as_string(stopping_criteria) << "\n";
+    if (extended) ss << NeighbourhoodSolver::evaluated_trace_as_string(graph, false);
     return ss.str();
 }
 

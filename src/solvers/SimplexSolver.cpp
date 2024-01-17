@@ -8,20 +8,11 @@
 #include <sstream>
 #include <algorithm>
 
-std::string SimplexSolver::evaluated_trace_as_string(const Graph &graph) const {
+std::string SimplexSolver::evaluated_trace_as_string(const Graph &graph, bool extended) const {
     std::stringstream ss;
-    ss << "******************* SIMPLEX SOLUTION = "
-       << graph.eval_path(solution)
-       << " *******************\n"
-       << "Execution time: " << execution_time_milliseconds << " ms\n"
-       << solution.as_string()
-       << "\n[";
-    auto points = graph.points_of_path(solution);
-    for (int i = 0; i < points.size(); i++) {
-        ss << points[i].as_string();
-        if (i != points.size() - 1) ss << ", ";
-    }
-    ss << "]";
+    ss << "Execution time: " << execution_time_milliseconds << " ms\n"
+       << "Solution value: " << graph.eval_path(solution) << "\n"
+       << "Solution path: " << solution.as_string() << "\n";
     return ss.str();
 }
 
@@ -29,15 +20,17 @@ Path SimplexSolver::_solve(const Graph &graph, const Path &initial_path) {
     if (time_limit != 0) {
         CPXsetdblparam(env, CPX_PARAM_TILIM, time_limit);
     }
+    std::cout << "Setting up the model..." << std::endl;
     setupLP(graph.size(), graph);
     CPXwriteprob(env, lp, "../outputs/simplex/simplex_model.lp", nullptr);
+    std::cout << "Solving..." << std::endl;
     CPXmipopt(env, lp);
     double obj_val;
     CPXgetobjval(env, lp, &obj_val);
     std::cout << "Objval: " << obj_val << std::endl;
 
     CPXsolwrite(env, lp, "../outputs/simplex/simplex_sol.sol");
-
+    std::cout << "Getting path..." << std::endl;
     Path res = solution_path();
 
     CPXfreeprob(env, &lp);
