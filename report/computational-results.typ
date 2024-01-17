@@ -1,82 +1,95 @@
+#import "tables.typ": *
+
 = Computational results
 
-== Cplex 25
-#table(
-  columns: (auto, auto, auto),
-  inset: 10pt,
-  align: center,
-  [], [*Solution*], [*Execution time (ms)*],
-[tsp25_1.dat], [179.753], [396],
-[tsp25_2.dat], [261.913], [777],
-[tsp25_3.dat], [247.435], [356],
-[tsp25_4.dat], [255.933], [486],
-[tsp25_5.dat], [59.6016], [250],
-[tsp25_6.dat], [237.891], [978],
-[tsp25_7.dat], [129.884], [541],
-[tsp25_8.dat], [172.776], [350],
-[tsp25_9.dat], [222.682], [524],
-[tsp25_10.dat], [121.672], [227]
+== Cplex results
+
+#figure(
+    grid(
+        columns: 2,
+        gutter: 2mm,
+        cplex25, cplex50, cplex75, cplex100, cplex200
+    ),
+    caption: "Results of cplex solver"
 )
 
-== Cplex 50
-#table(
-  columns: (auto, auto, auto),
-  inset: 10pt,
-  align: center,
-  [], [*Solution*], [*Execution time (ms)*],
-  [tsp50_1.dat], [243.28], [27612],
-  [tsp50_2.dat], [307.205], [31282],
-  [tsp50_3.dat], [228.997], [24399],
-  [tsp50_4.dat], [272.981], [8980],
-  [tsp50_5.dat], [330.537], [18037],
-  [tsp50_6.dat], [199.451], [1685],
-  [tsp50_7.dat], [253.743], [30895],
-  [tsp50_8.dat], [298.338], [1050545],
-  [tsp50_9.dat], [283.377], [23210],
-  [tsp50_10.dat], [288.651], [18632]
+\* sub-optimal solution obtained after 45 minutes of computation
+
+== Tabu search parameter calibration
+Tabu search parameters has been calibrated with a subset of the instances shown in the previous section.
+In particular it has been taken 3 instances for each size of the input (25, 50, 75, 100) and the insstance with size 200. For the rest of this section, the size of the instance will be called $n$.
+
+=== TS1
+In the first attempt, the following parameters are chosen.
+- Tabu-list size: $n$;
+- Stopping criteria: max-iterations;
+- max-iterations: $50 n$.
+
+=== TS2
+In the second attempt, it has been tried to reduce the size of the tabu-list. 
+It is easy to notice that none of the solutions is better with respect to the previous one.
+- Tabu-list size: $sqrt(n)$;
+- Stopping criteria: max-iterations;
+- max-iterations: $50 n$.
+
+#figure(
+    grid(
+        columns: 2,
+        gutter: 2mm,
+        ts1, ts2
+    ),
+    caption: "TS1 and TS2 results"
 )
 
-== Cplex 75
-#table(
-  columns: (auto, auto, auto),
-  inset: 10pt,
-  align: center,
-  [], [*Solution*], [*Execution time (ms)*],
-  [tsp75_1.dat], [352.863], [113697],
-  [tsp75_2.dat], [366.408], [38108],
-  [tsp75_3.dat], [268.928], [281109],
-  [tsp75_4.dat], [327.206], [55524],
-  [tsp75_5.dat], [421.207], [130561],
-  [tsp75_6.dat], [375.023], [96416],
-  [tsp75_7.dat], [366.794], [49496],
-  [tsp75_8.dat], [406.919], [94832],
-  [tsp75_9.dat], [245.736], [61522],
-  [tsp75_10.dat], [382.569], [99251],
+=== TS3
+Since reducing the size of the tabu-list seems not good, this time it has been tried to increase it.
+Doing this improves the solution of 3 test cases and makes worst 1 solution if compared to TS1.
+- Tabu-list size: $2 n$;
+- Stopping criteria: max-iterations;
+- max-iterations: $50 n$.
+
+=== TS4
+At this step, tabu-list length is stil increased.
+Good improvements are found in half of the test cases.
+- Tabu-list size: $n sqrt(n)$;
+- Stopping criteria: max-iterations;
+- max-iterations: $50 n$.
+
+#figure(
+    grid(
+        columns: 2,
+        gutter: 2mm,
+        ts3, ts4
+    ),
+    caption: "TS3 and TS4 results"
 )
 
-== Cplex 100
-#table(
-  columns: (auto, auto, auto),
-  inset: 10pt,
-  align: center,
-  [], [*Solution*], [*Execution time (ms)*],
-  [tsp100_1.dat], [413.422], [400411],
-  [tsp100_2.dat], [393.576], [2700384],
-  [tsp100_3.dat], [410.009], [191136],
-  [tsp100_4.dat], [353.605], [2700324],
-  [tsp100_5.dat], [387.885], [1049424],
-  [tsp100_6.dat], [373.489], [153525],
-  [tsp100_7.dat], [384.87], [2700329],
-  [tsp100_8.dat], [445.239], [254333],
-  [tsp100_9.dat], [415.534], [1912922],
-  [tsp100_10.dat], [413.223], [205023]
+=== TS5
+At this step, tabu-list length is stil increased and 3 small improvements has been found.
+It has also been tried to increase the number of iterations, by setting as stopping criteria, max-non-increasing-iterations = $n^2$ but the solution were the same while the execution time increased a lot.
+- Tabu-list size: $n^2$;
+- Stopping criteria: max-iterations;
+- max-iterations: $50 n$.
+
+=== TS6
+In the last test it has been tried to refine the number of iterations and the stopping criteria.
+The previous value for the number of iteration was already balnced and the new one has similar results, probably bigger instances are required in order to understand which is better.
+- Tabu-list size: $n^2$;
+- Stopping criteria: max-non-increasing-iterations;
+- max-iterations: $n^2 / 4$.
+
+#figure(
+    grid(
+        columns: 2,
+        gutter: 2mm,
+        ts5, ts6
+    ),
+    caption: "TS5 and TS6 results"
 )
 
-== Cplex 200
-#table(
-  columns: (auto, auto, auto),
-  inset: 10pt,
-  align: center,
-  [], [*Solution*], [*Execution time (ms)*],
-  [tsp200_1.dat], [618.972], [2701295]
+=== Errors
+
+#figure(
+  errors,
+  caption: "Relative errors"
 )

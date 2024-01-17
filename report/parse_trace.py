@@ -30,10 +30,10 @@ def read_input_from_file(file_path):
         input_data = file.read()
     return input_data
 
-n = input("which folder?\n")
+n = input("which file?\n")
 
 # Specify the file path
-file_path = f'/home/francesco/Scrivania/Universita/MeMoCO/exam/inputs/tsp{n}/simplex.txt'
+file_path = f'/home/francesco/Scrivania/Universita/MeMoCO/exam/inputs/calibration_set/{n}.txt'
 
 # Read input from file
 input_data = read_input_from_file(file_path)
