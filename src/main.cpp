@@ -21,14 +21,14 @@ int main() {
     if (create) {
         for (int i = 1; i <= 10; i++) {
             InputGenerator input_generator(100, 50);
-            input_generator.generate_shaped_input("tsp100_" + std::to_string(i), 50, 100);
+            input_generator.generate_shaped_input("tsp25_" + std::to_string(i), 15, 25);
         }
     }
 
     if (solve) {
         // ************ SIMPLEX SOLUTION ************
         for (int i = 1; i <= 10; i++) {
-            std::string input_path = "../inputs/tsp100/tsp100_" + std::to_string(i) + ".dat";
+            std::string input_path = "../inputs/tsp25/tsp25_" + std::to_string(i) + ".dat";
             Graph graph = Graph::from_file(input_path);
             Path path(graph.size());
 
