@@ -21,32 +21,35 @@ int main() {
     if (create) {
         for (int i = 1; i <= 10; i++) {
             InputGenerator input_generator(100, 50);
-            input_generator.generate_shaped_input("tsp25_" + std::to_string(i), 15, 25);
+            input_generator.generate_shaped_input("tsp200_" + std::to_string(i), 100, 200);
         }
     }
 
     if (solve) {
-        // ************ SIMPLEX SOLUTION ************
         for (int i = 1; i <= 10; i++) {
-            std::string input_path = "../inputs/tsp25/tsp25_" + std::to_string(i) + ".dat";
+            // ************ SIMPLEX SOLUTION ************
+            std::string test_size = "100";
+            std::string input_path = "../inputs/tsp200/tsp200_" + std::to_string(i) + ".dat";
             Graph graph = Graph::from_file(input_path);
             Path path(graph.size());
 
-            SimplexSolver simplex_solver(time_limit);
-            simplex_solver.solve(graph, path);
-            simplex_out << input_path << "\n"
-                        << simplex_solver.evaluated_trace_as_string(graph, false) << "\n";
-        }
+//            SimplexSolver simplex_solver(time_limit);
+//            simplex_solver.solve(graph, path);
+//            simplex_out << input_path << "\n"
+//                        << simplex_solver.evaluated_trace_as_string(graph, false) << "\n";
 
-//        // ************ 2-OPT SOLUTION ************
-//        TwoOptSolver two_opt_solver(time_limit);
-//        Path two_opt_sol = two_opt_solver.solve(graph, path);
-//        opt_out << two_opt_solver.evaluated_trace_as_string(graph, false);
-//
-//        // ************ TABU-SEARCH SOLUTION ************
-//        TabuSearchSolver tabu_search_solver(700, TabuSearchSolver::NO_LIMIT, 1000, time_limit);
-//        tabu_search_solver.solve(graph, path);
-//        ts_out << tabu_search_solver.evaluated_trace_as_string(graph, false);
+            // ************ 2-OPT SOLUTION ************
+            TwoOptSolver two_opt_solver(time_limit);
+            Path two_opt_sol = two_opt_solver.solve(graph, path);
+            opt_out << input_path << "\n"
+                    << two_opt_solver.evaluated_trace_as_string(graph, false) << "\n";
+
+            // ************ TABU-SEARCH SOLUTION ************
+            TabuSearchSolver tabu_search_solver(700, TabuSearchSolver::NO_LIMIT, 1000, time_limit);
+            tabu_search_solver.solve(graph, path);
+            ts_out << input_path << "\n"
+                   << tabu_search_solver.evaluated_trace_as_string(graph, false) << "\n";
+        }
     }
 
 }
