@@ -5,6 +5,8 @@
 #include "Timer.h"
 #include <chrono>
 
+using namespace std::chrono;
+
 void Timer::start() {
     _start_time = std::chrono::high_resolution_clock::now();
 }

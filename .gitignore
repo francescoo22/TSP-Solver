@@ -1,9 +1,10 @@
 cmake-build-debug/
 .idea/
 outputs/
-bin/
+bin/main
 plot/order.dat
 plot/points.dat
 plot/randomizer.py
 *.gif
 *.pdf
+*.o
