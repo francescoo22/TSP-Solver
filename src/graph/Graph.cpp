@@ -38,7 +38,7 @@ double Graph::eval_path(const Path &path) const {
 }
 
 Path Graph::get_random_path() const {
-    auto rd = std::random_device{};
+    std::random_device rd;
     auto rng = std::default_random_engine{rd()};
     auto res = std::vector<int>(_size);
     for (int i = 0; i < _size; i++) res[i] = i;
@@ -53,21 +53,6 @@ double Graph::neighbour_delta(const Path &path, int i, int j) const {
 
 int Graph::size() const {
     return _size;
-}
-
-void Graph::generate_input(const std::string &filename, int size) {
-    std::ofstream out("../inputs/" + filename + ".dat");
-    std::uniform_real_distribution<double> distribution(0, 100);
-    auto rd = std::random_device{};
-    auto rng = std::default_random_engine{rd()};
-
-    out << size << "\n";
-
-    for (int i = 0; i < size; i++) {
-        double x = std::round(100. * distribution(rng)) / 100.;
-        double y = std::round(100. * distribution(rng)) / 100.;
-        out << x << " " << y << "\n";
-    }
 }
 
 double Graph::get_edge(int i, int j) const {

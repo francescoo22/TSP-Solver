@@ -28,8 +28,6 @@ public:
 
     [[nodiscard]] const std::vector<Point> &points_of_path(const Path &path) const;
 
-    static void generate_input(const std::string &filename, int size);
-
     static Graph from_file(const std::string &file);
 
 private:
