@@ -10,7 +10,7 @@ Each of the following $n$ lines contains two doubles separeted by a space.
 
 == Holes generation
 The class `InputGenerator` deals with generating an instance of the problem.
-Since the abstract of the problem is about making holes on a motherboard, input instances are not generated completely at random, instead, a given number of random shapes representing the components of the motherboard is generated. There are four different shapes (line, rectangle, circle, set of points) and each shape has random dimensions.
+Since the abstract of the problem is about making holes on a motherboard, input instances are not generated completely at random, instead, a given number of random shapes representing the components of the motherboard is generated. There are four different shapes (line, rectangle, circle, set of points) and each shape has random dimensions and position.
 
 #figure(
   image("images/input_instance.png", width: 80%),

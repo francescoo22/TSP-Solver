@@ -27,12 +27,6 @@
 )
 
 
-= Introduction
-Introduction Introduction Introduction Introduction Introduction Introduction Introduction Introduction 
-Introduction Introduction Introduction Introduction Introduction Introduction Introduction Introduction 
-Introduction Introduction Introduction Introduction Introduction Introduction Introduction Introduction 
-Introduction Introduction Introduction Introduction Introduction Introduction Introduction Introduction 
-
 #include "problem_modelling.typ"
 #include "cplex.typ"
 #include "tabu-search.typ"

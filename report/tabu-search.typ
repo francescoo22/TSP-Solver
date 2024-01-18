@@ -12,12 +12,12 @@ Also using an `std::map` to check whether a path is in the tabu-list improves th
 Since `std::map` is implemented as a balanced BST, it was also necessary to implement a comparison operator between paths that has been implemented as lexicographic (this is why the complexity of operations on the tabu-map is $O(n log m)$ and not $O(log m)$).
 
 == Initial solution
-Since inputs are not completely random, starting from a path in which shapes are grouped together is already a good solution. Grouping parts is obtained for free since the input generation puts them in the right order. This approach is also coherent with the abstract of the problem since a company tha produces motherboards will probably know the parts of the motherboard.
+Since inputs are not completely random, starting from a path in which shapes are grouped together is already a good solution. Grouping parts is obtained for free since the input generation puts them in the right order. This approach is also coherent with the abstract of the problem since a company that produces motherboards will probably know the parts of the motherboard.
 In order to test different approaches, also a randomized initial path has been implemented.
 
 #figure(
   image("images/non_random_start.png", width: 80%),
-  caption: [Initial solution with shapes grouped],
+  caption: [Initial solution with grouped shapes],
 ) <non-random-initial-solution>
 
 #figure(
@@ -34,7 +34,6 @@ Their implementation is straightforward and there are not any interesting design
 
 == Parameters
 The parameters that can be calibrated are the following:
-- max iterations;
-- max non increasing iterations;
-- time limit;
-- tabu-list length.
+- stopping criteria;
+- tabu-list length;
+- inital solution.

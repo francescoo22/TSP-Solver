@@ -21,7 +21,7 @@ for (int i = 0; i < size; i++) {
 Variable indexes are stored inside an `std::map<std::tuple<char, int, int>, int>` called `tuple_to_index`. Since `std::map` has complexity of $O(log n)$ for accessing and adding a value, this way of mapping the indexes brings the model generation complexity to $O(n^2 log n)$ while using an `std::vector` would have kept the complexity to $O(n^2)$. It has been decided to use an `std::map` because it makes the code way more readable allowing to use the following syntax to access an index: `tuple_to_index[{'y', i, j}]`. Moreover model generation is not the bottleneck of the cplex solver since the model solution is way more expensive and so the difference between $O(n^2 log n)$ and $O(n^2)$ during the model generation is not relevant.
 
 == Result retrieving
-In order to retrieve the results it is necessary to make the opposite of what has been done during the model generation, in fact it is needed to map indexes to variables. To do so it is used an `std::vector<std::tuple<char, int, int>>` called `index_to_tuple`. Moreover the result of the problem should be a `Path` as described before, but since cplex output is just an array of values, some reasoning is neede.
+In order to retrieve the results it is necessary to make the opposite of what has been done during the model generation, in fact it is needed to map indexes to variables. To do so it is used an `std::vector<std::tuple<char, int, int>>` called `index_to_tuple`. Moreover the result of the problem should be a `Path` as described before, but since cplex output is just an array of values, some reasoning is needed.
 
 === Path retrieving algorithm
 
