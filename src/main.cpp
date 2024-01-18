@@ -1,52 +1,51 @@
 #include <fstream>
-#include <cassert>
 #include <iostream>
 #include "graph/Graph.h"
 #include "solvers/TwoOptSolver.h"
 #include "solvers/TabuSearchSolver.h"
 #include "solvers/SimplexSolver.h"
 #include "graph/Point.h"
-#include "InputGenerator.h"
 
 int main() {
-    std::string file = "../inputs/tsp50/tsp50_1.dat";
     std::ofstream simplex_out("../outputs/simplex.txt");
     std::ofstream opt_out("../outputs/2-opt_trace.txt");
     std::ofstream ts_out("../outputs/ts_trace.txt");
-    int time_limit = 45 * 60;
-    bool create = false;
-    bool solve = true;
 
+    std::string file;
+    std::cout << "Select instance size (25, 50 or 75)" << std::endl;
+    std::cin >> file;
+    if (file != "25" && file != "50" && file != "75") return 0;
+    file = "../inputs/tsp" + file + ".dat";
 
-    if (create) {
-        for (int i = 1; i <= 10; i++) {
-            InputGenerator input_generator(100, 50);
-            input_generator.generate_shaped_input("tsp100_" + std::to_string(i), 50, 100);
-        }
-    }
+    int time_limit;
+    std::cout << "Select time limit for cplex solver (seconds)" << std::endl;
+    std::cin >> time_limit;
+    if (time_limit <= 0) return 0;
 
-    if (solve) {
-        // ************ SIMPLEX SOLUTION ************
-        for (int i = 1; i <= 10; i++) {
-            std::string input_path = "../inputs/tsp100/tsp100_" + std::to_string(i) + ".dat";
-            Graph graph = Graph::from_file(input_path);
-            Path path(graph.size());
+    Graph graph = Graph::from_file(file);
+    Path path(graph.size());
+    unsigned tabu_list_length = graph.size() * graph.size();
+    unsigned max_iterations = 50 * graph.size();
 
-            SimplexSolver simplex_solver(time_limit);
-            simplex_solver.solve(graph, path);
-            simplex_out << input_path << "\n"
-                        << simplex_solver.evaluated_trace_as_string(graph, false) << "\n";
-        }
+    // ************ CPLEX SOLUTION ************
+    SimplexSolver simplex_solver(time_limit);
+    simplex_solver.solve(graph, path);
+    simplex_out << simplex_solver.evaluated_trace_as_string(graph, false);
 
-//        // ************ 2-OPT SOLUTION ************
-//        TwoOptSolver two_opt_solver(time_limit);
-//        Path two_opt_sol = two_opt_solver.solve(graph, path);
-//        opt_out << two_opt_solver.evaluated_trace_as_string(graph, false);
-//
-//        // ************ TABU-SEARCH SOLUTION ************
-//        TabuSearchSolver tabu_search_solver(700, TabuSearchSolver::NO_LIMIT, 1000, time_limit);
-//        tabu_search_solver.solve(graph, path);
-//        ts_out << tabu_search_solver.evaluated_trace_as_string(graph, false);
-    }
+    // ************ 2-OPT SOLUTION ************
+    std::cout << "Solving with 2-opt..." << std::endl;
+    TwoOptSolver two_opt_solver(time_limit);
+    Path two_opt_sol = two_opt_solver.solve(graph, path);
+    opt_out << two_opt_solver.evaluated_trace_as_string(graph, true);
 
+    // ************ TABU-SEARCH SOLUTION ************
+    std::cout << "Solving with tabu-search..." << std::endl;
+    TabuSearchSolver tabu_search_solver(tabu_list_length,
+                                        max_iterations,
+                                        TabuSearchSolver::NO_LIMIT,
+                                        TabuSearchSolver::NO_LIMIT);
+    tabu_search_solver.solve(graph, path);
+    ts_out << tabu_search_solver.evaluated_trace_as_string(graph, true);
+
+    std::cout << "Results have been written in \"outputs\" directory" << std::endl;
 }

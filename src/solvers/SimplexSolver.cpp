@@ -23,14 +23,13 @@ Path SimplexSolver::_solve(const Graph &graph, const Path &initial_path) {
     std::cout << "Setting up the model..." << std::endl;
     setupLP(graph.size(), graph);
     CPXwriteprob(env, lp, "../outputs/simplex/simplex_model.lp", nullptr);
-    std::cout << "Solving..." << std::endl;
+    std::cout << "Solving with cplex..." << std::endl;
     CPXmipopt(env, lp);
     double obj_val;
     CPXgetobjval(env, lp, &obj_val);
     std::cout << "Objval: " << obj_val << std::endl;
 
     CPXsolwrite(env, lp, "../outputs/simplex/simplex_sol.sol");
-    std::cout << "Getting path..." << std::endl;
     Path res = solution_path();
 
     CPXfreeprob(env, &lp);
