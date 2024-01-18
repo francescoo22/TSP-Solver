@@ -49,7 +49,6 @@ std::string TabuSearchSolver::evaluated_trace_as_string(const Graph &graph, bool
     return ss.str();
 }
 
-// TODO: try to optimize copies on tabu_list (make it a vector<Path*>)
 Path TabuSearchSolver::best_neighbour(const Graph &graph, const Path &path) {
     double initial_cost = graph.eval_path(path);
     double cur_best = 1e20;
