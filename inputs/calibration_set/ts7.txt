@@ -1,0 +1,65 @@
+../inputs/calibration_set/tsp25_1.dat
+Execution time: 119 ms
+Solution value: 179.753
+Solution path: []
+
+../inputs/calibration_set/tsp25_2.dat
+Execution time: 131 ms
+Solution value: 263.144
+Solution path: []
+
+../inputs/calibration_set/tsp25_3.dat
+Execution time: 133 ms
+Solution value: 249.524
+Solution path: []
+
+../inputs/calibration_set/tsp50_1.dat
+Execution time: 776 ms
+Solution value: 243.402
+Solution path: []
+
+../inputs/calibration_set/tsp50_2.dat
+Execution time: 756 ms
+Solution value: 308.191
+Solution path: []
+
+../inputs/calibration_set/tsp50_3.dat
+Execution time: 993 ms
+Solution value: 231.46
+Solution path: []
+
+../inputs/calibration_set/tsp75_1.dat
+Execution time: 2251 ms
+Solution value: 359.801
+Solution path: []
+
+../inputs/calibration_set/tsp75_2.dat
+Execution time: 2368 ms
+Solution value: 378.59
+Solution path: []
+
+../inputs/calibration_set/tsp75_3.dat
+Execution time: 2374 ms
+Solution value: 270.449
+Solution path: []
+
+../inputs/calibration_set/tsp100_1.dat
+Execution time: 5442 ms
+Solution value: 420.153
+Solution path: []
+
+../inputs/calibration_set/tsp100_2.dat
+Execution time: 6848 ms
+Solution value: 404.748
+Solution path: []
+
+../inputs/calibration_set/tsp100_3.dat
+Execution time: 5516 ms
+Solution value: 420.8
+Solution path: []
+
+../inputs/calibration_set/tsp200_1.dat
+Execution time: 41908 ms
+Solution value: 652.379
+Solution path: []
+
