@@ -82,9 +82,21 @@
   618.972
 )
 
+#let test_exact_values = (
+  255.933, 59.6016, 237.891, 129.884, 172.776, 222.682, 121.672,
+  272.981, 330.537, 199.451, 253.743, 298.338, 283.377, 288.651,
+)
+
+#let test_exact_values2 = (
+  327.206, 421.207, 375.023, 366.794, 406.919, 245.736, 382.569,
+  353.605, 387.885, 373.489, 384.87, 445.239, 415.534, 413.223
+)
+
 #let positions = range(4, 41, step: 3)
 
 #let re(t, i) = calc.round(calc.abs(float(t.children.at(i * 3 + 4).text) - float(calibration_exact_values.at(i))) / float(calibration_exact_values.at(i)) * 100, digits: 2)
+#let re1(t, i) = calc.round(calc.abs(float(t.children.at(i * 3 + 4).text) - float(test_exact_values.at(i))) / float(test_exact_values.at(i)) * 100, digits: 2)
+#let re2(t, i) = calc.round(calc.abs(float(t.children.at(i * 3 + 4).text) - float(test_exact_values2.at(i))) / float(test_exact_values2.at(i)) * 100, digits: 2)
 
 #let ts1 = table(
   columns: (auto, auto, auto),
@@ -206,23 +218,126 @@
   [tsp200_1.dat], [647.64], [43012]
 )
 
-#let errors = table(
-  
-  columns: (auto, auto, auto, auto, auto, auto, auto),
+#let ts7 = table(
+  columns: (auto, auto, auto),
   inset: 10pt,
   align: center,
-  [], [*TS1*], [*TS2*], [*TS3*], [*TS4*], [*TS5*], [*TS6*],
-  [tsp25_1.dat], [#re(ts1, 0)], [#re(ts2, 0)], [#re(ts3, 0)], [#re(ts4, 0)], [#re(ts5, 0)], [#re(ts6, 0)],
-  [tsp25_2.dat], [#re(ts1, 1)], [#re(ts2, 1)], [#re(ts3, 1)], [#re(ts4, 1)], [#re(ts5, 1)], [#re(ts6, 1)],
-  [tsp25_3.dat], [#re(ts1, 2)], [#re(ts2, 2)], [#re(ts3, 2)], [#re(ts4, 2)], [#re(ts5, 2)], [#re(ts6, 2)],
-  [tsp50_1.dat], [#re(ts1, 3)], [#re(ts2, 3)], [#re(ts3, 3)], [#re(ts4, 3)], [#re(ts5, 3)], [#re(ts6, 3)],
-  [tsp50_2.dat], [#re(ts1, 4)], [#re(ts2, 4)], [#re(ts3, 4)], [#re(ts4, 4)], [#re(ts5, 4)], [#re(ts6, 4)],
-  [tsp50_3.dat], [#re(ts1, 5)], [#re(ts2, 5)], [#re(ts3, 5)], [#re(ts4, 5)], [#re(ts5, 5)], [#re(ts6, 5)],
-  [tsp75_1.dat], [#re(ts1, 6)], [#re(ts2, 6)], [#re(ts3, 6)], [#re(ts4, 6)], [#re(ts5, 6)], [#re(ts6, 6)],
-  [tsp75_2.dat], [#re(ts1, 7)], [#re(ts2, 7)], [#re(ts3, 7)], [#re(ts4, 7)], [#re(ts5, 7)], [#re(ts6, 7)],
-  [tsp75_3.dat], [#re(ts1, 8)], [#re(ts2, 8)], [#re(ts3, 8)], [#re(ts4, 8)], [#re(ts5, 8)], [#re(ts6, 8)],
-  [tsp100_1.dat], [#re(ts1, 9)], [#re(ts2, 9)], [#re(ts3, 9)], [#re(ts4, 9)], [#re(ts5, 9)], [#re(ts6, 9)],
-  [tsp100_2.dat], [#re(ts1, 10)], [#re(ts2, 10)], [#re(ts3, 10)], [#re(ts4, 10)], [#re(ts5, 10)], [#re(ts6, 10)],
-  [tsp100_3.dat], [#re(ts1, 11)], [#re(ts2, 11)], [#re(ts3, 11)], [#re(ts4, 11)], [#re(ts5, 11)], [#re(ts6, 11)],
-  [tsp200_1.dat], [#re(ts1, 12)], [#re(ts2, 12)], [#re(ts3, 12)], [#re(ts4, 12)], [#re(ts5, 12)], [#re(ts6, 12)],
+  [], [*Solution average*], [*Execution time average (ms)*],
+  [tsp25_1.dat], [179.753], [119],
+  [tsp25_2.dat], [263.144], [131],
+  [tsp25_3.dat], [249.524], [133],
+  [tsp50_1.dat], [243.402], [776],
+  [tsp50_2.dat], [308.191], [756],
+  [tsp50_3.dat], [231.46], [993],
+  [tsp75_1.dat], [359.801], [2251],
+  [tsp75_2.dat], [378.59], [2368],
+  [tsp75_3.dat], [270.449], [2374],
+  [tsp100_1.dat], [420.153], [5442],
+  [tsp100_2.dat], [404.748], [6848],
+  [tsp100_3.dat], [420.8], [5516],
+  [tsp200_1.dat], [652.379], [41908]
+)
+
+#let errors = table(
+  columns: (auto, auto, auto, auto, auto, auto, auto, auto),
+  inset: 10pt,
+  align: center,
+  [], [*TS1*], [*TS2*], [*TS3*], [*TS4*], [*TS5*], [*TS6*], [*TS7*],
+  [tsp25_1.dat], [#re(ts1, 0)], [#re(ts2, 0)], [#re(ts3, 0)], [#re(ts4, 0)], [#re(ts5, 0)], [#re(ts6, 0)], [#re(ts7, 0)],
+  [tsp25_2.dat], [#re(ts1, 1)], [#re(ts2, 1)], [#re(ts3, 1)], [#re(ts4, 1)], [#re(ts5, 1)], [#re(ts6, 1)], [#re(ts7, 1)],
+  [tsp25_3.dat], [#re(ts1, 2)], [#re(ts2, 2)], [#re(ts3, 2)], [#re(ts4, 2)], [#re(ts5, 2)], [#re(ts6, 2)], [#re(ts7, 2)],
+  [tsp50_1.dat], [#re(ts1, 3)], [#re(ts2, 3)], [#re(ts3, 3)], [#re(ts4, 3)], [#re(ts5, 3)], [#re(ts6, 3)], [#re(ts7, 3)],
+  [tsp50_2.dat], [#re(ts1, 4)], [#re(ts2, 4)], [#re(ts3, 4)], [#re(ts4, 4)], [#re(ts5, 4)], [#re(ts6, 4)], [#re(ts7, 4)],
+  [tsp50_3.dat], [#re(ts1, 5)], [#re(ts2, 5)], [#re(ts3, 5)], [#re(ts4, 5)], [#re(ts5, 5)], [#re(ts6, 5)], [#re(ts7, 5)],
+  [tsp75_1.dat], [#re(ts1, 6)], [#re(ts2, 6)], [#re(ts3, 6)], [#re(ts4, 6)], [#re(ts5, 6)], [#re(ts6, 6)], [#re(ts7, 6)],
+  [tsp75_2.dat], [#re(ts1, 7)], [#re(ts2, 7)], [#re(ts3, 7)], [#re(ts4, 7)], [#re(ts5, 7)], [#re(ts6, 7)], [#re(ts7, 7)],
+  [tsp75_3.dat], [#re(ts1, 8)], [#re(ts2, 8)], [#re(ts3, 8)], [#re(ts4, 8)], [#re(ts5, 8)], [#re(ts6, 8)], [#re(ts7, 8)],
+  [tsp100_1.dat], [#re(ts1, 9)], [#re(ts2, 9)], [#re(ts3, 9)], [#re(ts4, 9)], [#re(ts5, 9)], [#re(ts6, 9)], [#re(ts7, 9)],
+  [tsp100_2.dat], [#re(ts1, 10)], [#re(ts2, 10)], [#re(ts3, 10)], [#re(ts4, 10)], [#re(ts5, 10)], [#re(ts6, 10)], [#re(ts7, 10)],
+  [tsp100_3.dat], [#re(ts1, 11)], [#re(ts2, 11)], [#re(ts3, 11)], [#re(ts4, 11)], [#re(ts5, 11)], [#re(ts6, 11)], [#re(ts7, 11)],
+  [tsp200_1.dat], [#re(ts1, 12)], [#re(ts2, 12)], [#re(ts3, 12)], [#re(ts4, 12)], [#re(ts5, 12)], [#re(ts6, 12)], [#re(ts7, 12)],
+)
+
+#let results1 = table(
+  columns: (auto, auto, auto),
+  inset: 10pt,
+  align: center,
+  [], [*Solution*], [*Execution time*],
+  [tsp25_4.dat], [255.933], [131],
+  [tsp25_5.dat], [59.6016], [102],
+  [tsp25_6.dat], [237.891], [100],
+  [tsp25_7.dat], [129.884], [102],
+  [tsp25_8.dat], [172.776], [105],
+  [tsp25_9.dat], [222.682], [118],
+  [tsp25_10.dat], [121.672], [87],
+  [tsp50_4.dat], [273.335], [571],
+  [tsp50_5.dat], [332.868], [571],
+  [tsp50_6.dat], [200.631], [577],
+  [tsp50_7.dat], [253.743], [1343],
+  [tsp50_8.dat], [298.8], [1549],
+  [tsp50_9.dat], [283.727], [681],
+  [tsp50_10.dat], [288.651], [585]
+)
+
+#let results1_error = table(
+  columns: (auto, auto, auto, auto),
+  inset: 10pt,
+  align: center,
+  [], [*Solution*], [*Execution time*], [*RE%*],
+  [tsp25_4.dat], [255.933], [131], [#re1(results1, 0)],
+  [tsp25_5.dat], [59.6016], [102], [#re1(results1, 1)],
+  [tsp25_6.dat], [237.891], [100], [#re1(results1, 2)],
+  [tsp25_7.dat], [129.884], [102], [#re1(results1, 3)],
+  [tsp25_8.dat], [172.776], [105], [#re1(results1, 4)],
+  [tsp25_9.dat], [222.682], [118], [#re1(results1, 5)],
+  [tsp25_10.dat], [121.672], [87], [#re1(results1, 6)],
+  [tsp50_4.dat], [273.335], [571], [#re1(results1, 7)],
+  [tsp50_5.dat], [332.868], [571], [#re1(results1, 8)],
+  [tsp50_6.dat], [200.631], [577], [#re1(results1, 9)],
+  [tsp50_7.dat], [253.743], [1343], [#re1(results1, 10)],
+  [tsp50_8.dat], [298.8], [1549], [#re1(results1, 11)],
+  [tsp50_9.dat], [283.727], [681], [#re1(results1, 12)],
+  [tsp50_10.dat], [288.651], [585], [#re1(results1, 13)],
+)
+
+#let results2 = table(
+  columns: (auto, auto, auto),
+  inset: 10pt,
+  align: center,
+  [], [*Solution*], [*Execution time*],
+  [tsp75_4.dat], [329.617], [2353],
+  [tsp75_5.dat], [440.361], [3747],
+  [tsp75_6.dat], [375.332], [1577],
+  [tsp75_7.dat], [374.951], [2933],
+  [tsp75_8.dat], [422.736], [1705],
+  [tsp75_9.dat], [245.996], [1497],
+  [tsp75_10.dat], [387.264], [1909],
+  [tsp100_4.dat], [360.5], [3866],
+  [tsp100_5.dat], [389.919], [7056],
+  [tsp100_6.dat], [374.976], [3479],
+  [tsp100_7.dat], [384.955], [3898],
+  [tsp100_8.dat], [464.371], [4236],
+  [tsp100_9.dat], [425.14], [3702],
+  [tsp100_10.dat], [439.132], [3749],
+)
+
+#let results2_error = table(
+  columns: (auto, auto, auto, auto),
+  inset: 10pt,
+  align: center,
+  [], [*Solution*], [*Execution time*], [*RE%*],
+  [tsp75_4.dat], [329.617], [2353], [#re2(results2, 0)],
+  [tsp75_5.dat], [440.361], [3747], [#re2(results2, 1)],
+  [tsp75_6.dat], [375.332], [1577], [#re2(results2, 2)],
+  [tsp75_7.dat], [374.951], [2933], [#re2(results2, 3)],
+  [tsp75_8.dat], [422.736], [1705], [#re2(results2, 4)],
+  [tsp75_9.dat], [245.996], [1497], [#re2(results2, 5)],
+  [tsp75_10.dat], [387.264], [1909], [#re2(results2, 6)],
+  [tsp100_4.dat], [360.5], [3866], [#re2(results2, 7)],
+  [tsp100_5.dat], [389.919], [7056], [#re2(results2, 8)],
+  [tsp100_6.dat], [374.976], [3479], [#re2(results2, 9)],
+  [tsp100_7.dat], [384.955], [3898], [#re2(results2, 10)],
+  [tsp100_8.dat], [464.371], [4236], [#re2(results2, 11)],
+  [tsp100_9.dat], [425.14], [3702], [#re2(results2, 12)],
+  [tsp100_10.dat], [439.132], [3749], [#re2(results2, 13)],
 )

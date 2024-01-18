@@ -18,7 +18,7 @@ In order to test different approaches, also a randomized initial path has been i
 #figure(
   image("images/non_random_start.png", width: 80%),
   caption: [Initial solution with shapes grouped],
-)
+) <non-random-initial-solution>
 
 #figure(
   image("images/random_start.png", width: 80%),

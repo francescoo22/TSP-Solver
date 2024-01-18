@@ -24,6 +24,7 @@ In the first attempt, the following parameters are chosen.
 - Tabu-list size: $n$;
 - Stopping criteria: max-iterations;
 - max-iterations: $50 n$.
+- Initial solution: Non-random (like in @non-random-initial-solution)
 
 === TS2
 In the second attempt, it has been tried to reduce the size of the tabu-list. 
@@ -31,6 +32,7 @@ It is easy to notice that none of the solutions is better with respect to the pr
 - Tabu-list size: $sqrt(n)$;
 - Stopping criteria: max-iterations;
 - max-iterations: $50 n$.
+- Initial solution: Non-random (like in @non-random-initial-solution)
 
 #figure(
     grid(
@@ -47,6 +49,7 @@ Doing this improves the solution of 3 test cases and makes worst 1 solution if c
 - Tabu-list size: $2 n$;
 - Stopping criteria: max-iterations;
 - max-iterations: $50 n$.
+- Initial solution: Non-random (like in @non-random-initial-solution)
 
 === TS4
 At this step, tabu-list length is stil increased.
@@ -54,6 +57,7 @@ Good improvements are found in half of the test cases.
 - Tabu-list size: $n sqrt(n)$;
 - Stopping criteria: max-iterations;
 - max-iterations: $50 n$.
+- Initial solution: Non-random (like in @non-random-initial-solution)
 
 #figure(
     grid(
@@ -70,13 +74,15 @@ It has also been tried to increase the number of iterations, by setting as stopp
 - Tabu-list size: $n^2$;
 - Stopping criteria: max-iterations;
 - max-iterations: $50 n$.
+- Initial solution: Non-random (like in @non-random-initial-solution)
 
 === TS6
-In the last test it has been tried to refine the number of iterations and the stopping criteria.
+In this test it has been tried to refine the number of iterations and the stopping criteria.
 The previous value for the number of iteration was already balnced and the new one has similar results, probably bigger instances are required in order to understand which is better.
 - Tabu-list size: $n^2$;
 - Stopping criteria: max-non-increasing-iterations;
-- max-iterations: $n^2 / 4$.
+- max-non-increasing-iterations: $n^2 / 4$.
+- Initial solution: Non-random (like in @non-random-initial-solution)
 
 #figure(
     grid(
@@ -87,9 +93,33 @@ The previous value for the number of iteration was already balnced and the new o
     caption: "TS5 and TS6 results"
 )
 
-=== Errors
+== TS7
+Finally it has been tried to see whether a random initial solution can be better than an initial solution with parts grouped like in @non-random-initial-solution. Since the inital solution is selected at random, the tests have been run 5 times and the results shown in @ts7-table are an average.
+5 test cases have a better solution and 7 have a worst one, so a good approach can be mixing random initial paths with non-random.
+- Tabu-list size: $n^2$;
+- Stopping criteria: max-iterations;
+- max-iterations: $50 n$.
+- Initial solution: Random
+
+
+#figure(
+    ts7,
+    caption: "TS7 results"
+) <ts7-table>
+
+=== Relative percentage errors
 
 #figure(
   errors,
-  caption: "Relative errors"
+  caption: "Relative percentage errors"
+)
+
+== Final results
+#figure(
+        grid(
+        columns: 2,
+        gutter: 2mm,
+        results1_error, results2_error
+    ),
+    caption: "Final results"
 )
