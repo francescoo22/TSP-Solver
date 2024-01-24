@@ -15,7 +15,7 @@ SRCS = $(SRC_DIR)/main.cpp \
        $(SRC_DIR)/graph/Point.cpp \
        $(SRC_DIR)/solvers/TwoOptSolver.cpp \
        $(SRC_DIR)/solvers/TabuSearchSolver.cpp \
-       $(SRC_DIR)/solvers/SimplexSolver.cpp \
+       $(SRC_DIR)/solvers/CplexSolver.cpp \
        $(SRC_DIR)/solvers/NeighbourhoodSolver.cpp \
        $(SRC_DIR)/Timer.cpp \
        $(SRC_DIR)/InputGenerator.cpp \

@@ -12,7 +12,7 @@ if num_points != len(points):
 
 x_coordinates, y_coordinates = zip(*points)
 
-plt.scatter(x_coordinates, y_coordinates, color='blue', marker='o')
+plt.scatter(x_coordinates, y_coordinates, color='blue', marker='.')
 plt.title('Scatter Plot of Points')
 plt.xlabel('X Coordinate')
 plt.ylabel('Y Coordinate')

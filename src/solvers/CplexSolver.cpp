@@ -2,13 +2,13 @@
 // Created by francesco on 08/01/24.
 //
 
-#include "SimplexSolver.h"
+#include "CplexSolver.h"
 #include <cstring>
 #include <iostream>
 #include <sstream>
 #include <algorithm>
 
-std::string SimplexSolver::evaluated_trace_as_string(const Graph &graph, bool extended) const {
+std::string CplexSolver::evaluated_trace_as_string(const Graph &graph, bool extended) const {
     std::stringstream ss;
     ss << "Execution time: " << execution_time_milliseconds << " ms\n"
        << "Solution value: " << graph.eval_path(solution) << "\n"
@@ -16,7 +16,7 @@ std::string SimplexSolver::evaluated_trace_as_string(const Graph &graph, bool ex
     return ss.str();
 }
 
-Path SimplexSolver::_solve(const Graph &graph, const Path &initial_path) {
+Path CplexSolver::_solve(const Graph &graph, const Path &initial_path) {
     if (time_limit != 0) {
         CPXsetdblparam(env, CPX_PARAM_TILIM, time_limit);
     }
@@ -37,14 +37,14 @@ Path SimplexSolver::_solve(const Graph &graph, const Path &initial_path) {
     return res;
 }
 
-char **SimplexSolver::from_string(const std::string &s) {
+char **CplexSolver::from_string(const std::string &s) {
     char **stringArray = new char *[1];
     stringArray[0] = new char[s.length() + 1];
     strcpy(stringArray[0], s.c_str());
     return stringArray;
 }
 
-void SimplexSolver::setupLP(int size, const Graph &graph) {
+void CplexSolver::setupLP(int size, const Graph &graph) {
     int cur_index = 0;
 
     for (int i = 0; i < size; i++) {
@@ -151,7 +151,7 @@ void SimplexSolver::setupLP(int size, const Graph &graph) {
     }
 }
 
-Path SimplexSolver::solution_path() {
+Path CplexSolver::solution_path() {
     std::vector<double> var_values(index_to_tuple.size());
     std::vector<std::pair<int, int>> arcs;
     CPXgetx(env, lp, &var_values[0], 0, var_values.size() - 1);
@@ -173,15 +173,15 @@ Path SimplexSolver::solution_path() {
     return Path(ans);
 }
 
-bool SimplexSolver::equal(double a, double b) {
+bool CplexSolver::equal(double a, double b) {
     return std::abs(a - b) < 0.0001;
 }
 
-void SimplexSolver::_reset() {
+void CplexSolver::_reset() {
     env = CPXopenCPLEX(&status);
     lp = CPXcreateprob(env, &status, "");
     tuple_to_index.clear();
     index_to_tuple.clear();
 }
 
-SimplexSolver::SimplexSolver(unsigned int time_limit) : TspSolver(time_limit), status(0), env(nullptr), lp(nullptr) {}
+CplexSolver::CplexSolver(unsigned int time_limit) : TspSolver(time_limit), status(0), env(nullptr), lp(nullptr) {}

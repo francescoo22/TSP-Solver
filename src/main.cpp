@@ -3,7 +3,7 @@
 #include "graph/Graph.h"
 #include "solvers/TwoOptSolver.h"
 #include "solvers/TabuSearchSolver.h"
-#include "solvers/SimplexSolver.h"
+#include "solvers/CplexSolver.h"
 #include "graph/Point.h"
 
 int main() {
@@ -28,7 +28,7 @@ int main() {
     unsigned max_iterations = 50 * graph.size();
 
     // ************ CPLEX SOLUTION ************
-    SimplexSolver simplex_solver(time_limit);
+    CplexSolver simplex_solver(time_limit);
     simplex_solver.solve(graph, path);
     simplex_out << simplex_solver.evaluated_trace_as_string(graph, false);
 

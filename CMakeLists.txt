@@ -19,8 +19,8 @@ add_executable(TSP_solver_cpp src/main.cpp
         src/solvers/TwoOptSolver.h
         src/solvers/TabuSearchSolver.cpp
         src/solvers/TabuSearchSolver.h
-        src/solvers/SimplexSolver.cpp
-        src/solvers/SimplexSolver.h
+        src/solvers/CplexSolver.cpp
+        src/solvers/CplexSolver.h
         src/solvers/NeighbourhoodSolver.cpp
         src/solvers/NeighbourhoodSolver.h
         src/graph/Point.cpp

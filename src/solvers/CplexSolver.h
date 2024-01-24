@@ -2,17 +2,17 @@
 // Created by francesco on 08/01/24.
 //
 
-#ifndef TSP_SOLVER_CPP_SIMPLEXSOLVER_H
-#define TSP_SOLVER_CPP_SIMPLEXSOLVER_H
+#ifndef TSP_SOLVER_CPP_CPLEXSOLVER_H
+#define TSP_SOLVER_CPP_CPLEXSOLVER_H
 
 
 #include "TspSolver.h"
 #include <ilcplex/cplex.h>
 #include <map>
 
-class SimplexSolver : public TspSolver {
+class CplexSolver : public TspSolver {
 public:
-    explicit SimplexSolver(unsigned int time_limit = 0);
+    explicit CplexSolver(unsigned int time_limit = 0);
 
     [[nodiscard]] std::string evaluated_trace_as_string(const Graph &graph, bool extended) const override;
 
@@ -37,4 +37,4 @@ private:
 };
 
 
-#endif //TSP_SOLVER_CPP_SIMPLEXSOLVER_H
+#endif //TSP_SOLVER_CPP_CPLEXSOLVER_H
