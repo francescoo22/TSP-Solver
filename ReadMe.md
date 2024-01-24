@@ -28,17 +28,20 @@ An example of a suboptimal solution found by `CplexSolver`:
 - Solution value: 618.972
 
 ![MILP solution](report/images/tsp200-cplex.png)
-
-[//]: # (<img src="report/images/tsp200-cplex.png" width="80%">)
+*Solution found by `CplexSolver`*
 
 ### 2-Opt Solution
 - Execution time: 202 ms
 - Solution value: 657.699
 
-![2-Opt solution](report/images/two-opt-sol.gif)
+<img src="report/images/two-opt-sol.gif" width="1072px" height="515px" caption="a">
+
+*Iterations of `TwoOptSolver`*
 
 ### Tabu Search solution
 - Execution time: 26505 ms
 - Solution value: 647.64
 
-![Tabu-search last 600 iterations](report/images/tabu-search-sol.gif)
+<img src="report/images/tabu-search-sol.gif" width="1072px" height="515px">
+
+*Last 600 iterations of `TabuSearchSolver`*
